@@ -1,17 +1,20 @@
 {
-  "generated_at": "2026-11-12 15:40 (Asia/Tokyo)",
-  "note": "PROPOSAL / dry-run only. Not applied to index.html.",
+  "generated_at": "2026-11-12 16:14 (Asia/Tokyo)",
+  "note": "Approved 15-category scheme applied to the catalog, now including M5Stack. M5Stack parts were classified with docs.m5stack.com section hints plus keyword rules. Form factors (Unit / Module / Hat / Atomic / Stamp / Chain) are tags only. No new categories were added.",
   "catalog": {
-    "total": 1216,
+    "total": 1493,
     "adafruit": 482,
-    "sparkfun": 734
+    "sparkfun": 734,
+    "m5stack": 277
   },
   "sources": {
     "adafruit_categories_page": "https://www.adafruit.com/categories",
     "adafruit_api_products": "https://www.adafruit.com/api/products (product_master_category; 481/482 catalog IDs matched; #1145 missing)",
     "adafruit_api_categories": "https://www.adafruit.com/api/categories (41 top-level categories, nested tree)",
     "sparkfun_all_categories": "https://www.sparkfun.com/all-categories",
-    "sparkfun_product_pages": "Many catalog SKUs 404 (discontinued). ROB-* titles recovered from Digi-Key hosted SparkFun datasheets (191/226)."
+    "sparkfun_product_pages": "Many catalog SKUs 404 (discontinued). ROB-* titles recovered from Digi-Key hosted SparkFun datasheets (191/226).",
+    "m5stack_repo": "https://github.com/m5stack/M5_Hardware (Products/*/Structures and Common form-factor shells; KiCad 3D STEP attached when a product folder had no 3D model). No Git LFS.",
+    "m5stack_docs": "https://docs.m5stack.com/en/products (section paths: core, unit, module, hat, atom, stamp, accessory, base, app, chain, ...)"
   },
   "judgment_calls": [
     "Primary category is by function, not form. A BME280 breakout is センサー; an OLED FeatherWing is ディスプレイ; a motor shield is モーター. Form (breakout / FeatherWing / Shield / HAT / Bonnet / STEMMA / Qwiic) is a secondary tag so you can still filter by platform.",
@@ -21,7 +24,8 @@
     "LilyPad / Flora / Gemma main boards are マイコンボード with a wearable tag, not the wearable category.",
     "Relays are treated as actuators (モーター / アクチュエータ).",
     "ADC/DAC and level shifters are 通信 / インタフェース.",
-    "RTC / clock breakouts are センサー."
+    "RTC / clock breakouts are センサー.",
+    "M5Stack: official repo m5stack/M5_Hardware (MIT, no Git LFS). Included 269 Products folders with 3D, plus 2 products that only had KiCad STEP (Stamp UWB, Stamp Timer Power2), plus 6 Common form-factor shells with STEP+JPG. Excluded 6 folders with only PCB/2D (Faces Kit, Atom Hub Proto, Module Bus, Stamp-P4, Stamp-C5, Common/Module13.2). No new categories. Unit Puzzle (8x8 WS2812) → LED. Module LLM and StamPLC-class controllers → マイコンボード. Relays / H-bridge → モーター. GPS → センサー (same as Adafruit/SparkFun). 0 M5Stack parts in その他."
   ],
   "categories": [
     {
@@ -120,183 +124,236 @@
       "id": "dev-boards",
       "ja": "マイコンボード",
       "en": "Development boards",
-      "total": 114,
+      "total": 202,
       "adafruit": 91,
       "sparkfun": 23,
       "examples": [
         "sparkfun: USB Bit Whacker-18F2553",
         "adafruit: Trinket 5V",
-        "adafruit: ProTrinket 5V"
-      ]
+        "adafruit: ProTrinket 5V",
+        "m5stack: AI Pyramid-pro",
+        "m5stack: AI Pyramid",
+        "m5stack: Atom-matrix v1.1"
+      ],
+      "m5stack": 88
     },
     {
       "id": "sensors",
       "ja": "センサー",
       "en": "Sensors",
-      "total": 142,
+      "total": 211,
       "adafruit": 94,
       "sparkfun": 48,
       "examples": [
         "adafruit: NFC Breakout",
         "adafruit: INA219 Stemma",
-        "adafruit: ADS1115 ADC"
-      ]
+        "adafruit: ADS1115 ADC",
+        "m5stack: Unit ENV-III",
+        "m5stack: Unit PIR",
+        "m5stack: Unit Finger"
+      ],
+      "m5stack": 69
     },
     {
       "id": "displays",
       "ja": "ディスプレイ",
       "en": "Displays",
-      "total": 76,
+      "total": 78,
       "adafruit": 63,
       "sparkfun": 13,
       "examples": [
         "sparkfun: Serial LCD Backpack v28",
         "adafruit: LCD Backpack I2C SPI",
-        "sparkfun: 1602 LCD Metalcasing"
-      ]
+        "sparkfun: 1602 LCD Metalcasing",
+        "m5stack: Unit OLED",
+        "m5stack: Unit LCD"
+      ],
+      "m5stack": 2
     },
     {
       "id": "leds",
       "ja": "LED / 照明",
       "en": "LEDs & lighting",
-      "total": 44,
+      "total": 47,
       "adafruit": 27,
       "sparkfun": 17,
       "examples": [
         "sparkfun: LED Basic Red 3mm",
         "adafruit: Laser Diode",
-        "adafruit: NeoPixel Strip"
-      ]
+        "adafruit: NeoPixel Strip",
+        "m5stack: Unit RGB",
+        "m5stack: Unit Flashlight",
+        "m5stack: Unit Puzzle"
+      ],
+      "m5stack": 3
     },
     {
       "id": "motors",
       "ja": "モーター / アクチュエータ",
       "en": "Motors & actuators",
-      "total": 62,
+      "total": 78,
       "adafruit": 28,
       "sparkfun": 34,
       "examples": [
         "adafruit: NEMA-17 Stepper Motor",
         "adafruit: Large Solenoid",
-        "adafruit: DC Toy Motor"
-      ]
+        "adafruit: DC Toy Motor",
+        "m5stack: Unit Relay",
+        "m5stack: Unit Vibrator",
+        "m5stack: Unit Fan"
+      ],
+      "m5stack": 16
     },
     {
       "id": "power",
       "ja": "電源 / バッテリー",
       "en": "Power & batteries",
-      "total": 64,
+      "total": 71,
       "adafruit": 43,
       "sparkfun": 21,
       "examples": [
         "adafruit: 9V Battery Holder",
         "adafruit: 1200mAh lipo",
-        "adafruit: USB Lilon Lipoly Charger"
-      ]
+        "adafruit: USB Lilon Lipoly Charger",
+        "m5stack: Base M5GO Bottom3",
+        "m5stack: M5Camera-Battery",
+        "m5stack: Atomic Battery Base"
+      ],
+      "m5stack": 7
     },
     {
       "id": "comms",
       "ja": "通信 / インタフェース",
       "en": "Wireless & interfaces",
-      "total": 68,
+      "total": 110,
       "adafruit": 23,
       "sparkfun": 45,
       "examples": [
         "sparkfun: 16 Channel Multiplexer",
         "sparkfun: SparkFun RS-232 Shifter SMD",
-        "sparkfun: SparkFun Microsd Transflash Breakout"
-      ]
+        "sparkfun: SparkFun Microsd Transflash Breakout",
+        "m5stack: Stamp UWB",
+        "m5stack: Unit IR",
+        "m5stack: Unit Hub"
+      ],
+      "m5stack": 42
     },
     {
       "id": "connectors",
       "ja": "コネクタ / ケーブル",
       "en": "Connectors & cables",
-      "total": 55,
+      "total": 59,
       "adafruit": 26,
       "sparkfun": 29,
       "examples": [
         "sparkfun: DC Barrel Power Jack Connector",
         "sparkfun: RJ11 6 Pin Connector",
-        "sparkfun: D Sub Serial Connector 9 Pin Female PCB Mount"
-      ]
+        "sparkfun: D Sub Serial Connector 9 Pin Female PCB Mount",
+        "m5stack: Unit 3.96",
+        "m5stack: Unit Grove To Grove",
+        "m5stack: Unit Typec To Grove"
+      ],
+      "m5stack": 4
     },
     {
       "id": "switches",
       "ja": "スイッチ / 入力デバイス",
       "en": "Switches & input",
-      "total": 66,
+      "total": 84,
       "adafruit": 40,
       "sparkfun": 26,
       "examples": [
         "sparkfun: Mini Pushbutton Switch",
         "sparkfun: Mini Power Switch SPDT",
-        "adafruit: Arcade Button 30mm"
-      ]
+        "adafruit: Arcade Button 30mm",
+        "m5stack: Tab5 Keyboard",
+        "m5stack: Unit Angle",
+        "m5stack: Unit Joystick v1.1"
+      ],
+      "m5stack": 18
     },
     {
       "id": "audio",
       "ja": "オーディオ",
       "en": "Audio",
-      "total": 37,
+      "total": 45,
       "adafruit": 26,
       "sparkfun": 11,
       "examples": [
         "adafruit: MAX98306 Stereo Amp",
         "adafruit: Speaker 3in 8Ohm 1W",
-        "adafruit: Pizero Large"
-      ]
+        "adafruit: Pizero Large",
+        "m5stack: Unit Mini PDM",
+        "m5stack: Unit MIC",
+        "m5stack: Unit DDS"
+      ],
+      "m5stack": 8
     },
     {
       "id": "components",
       "ja": "電子部品",
       "en": "Components",
-      "total": 13,
+      "total": 14,
       "adafruit": 2,
       "sparkfun": 11,
       "examples": [
         "sparkfun: Crystal SMD 16MHz",
         "adafruit: MOSFET P-channel",
-        "adafruit: LM73100 Ideal Diode"
-      ]
+        "adafruit: LM73100 Ideal Diode",
+        "m5stack: Unit RTC"
+      ],
+      "m5stack": 1
     },
     {
       "id": "prototyping",
       "ja": "プロトタイピング",
       "en": "Prototyping",
-      "total": 33,
+      "total": 37,
       "adafruit": 12,
       "sparkfun": 21,
       "examples": [
         "adafruit: Halfsize Breadboard",
         "sparkfun: SparkFun SOIC To DIP Adapter 8 Pin",
-        "sparkfun: SparkFun SOIC To DIP Adapter 20 Pin"
-      ]
+        "sparkfun: SparkFun SOIC To DIP Adapter 20 Pin",
+        "m5stack: Basex",
+        "m5stack: Module Proto",
+        "m5stack: Unit Proto"
+      ],
+      "m5stack": 4
     },
     {
       "id": "cases",
       "ja": "ケース / 筐体",
       "en": "Cases & enclosures",
-      "total": 5,
+      "total": 17,
       "adafruit": 3,
       "sparkfun": 2,
       "examples": [
         "adafruit: Extruded aluminum box 94mm",
         "adafruit: Mini Sparkle Motion Case",
-        "adafruit: Sparkle Motion Case"
-      ]
+        "adafruit: Sparkle Motion Case",
+        "m5stack: Frame",
+        "m5stack: Atom Mate",
+        "m5stack: Base PLC-M12 v1.1"
+      ],
+      "m5stack": 12
     },
     {
       "id": "robotics-hw",
       "ja": "ロボット機構",
       "en": "Robotics hardware",
-      "total": 222,
+      "total": 225,
       "adafruit": 3,
       "sparkfun": 219,
       "examples": [
         "adafruit: Adafruit 2020 Extrusion",
         "adafruit: Aluminum Timing Pulley",
-        "adafruit: Slide Rail Platform"
-      ]
+        "adafruit: Slide Rail Platform",
+        "m5stack: Roverc-pro",
+        "m5stack: Stampfly",
+        "m5stack: Stackchan"
+      ],
+      "m5stack": 3
     },
     {
       "id": "other",
@@ -309,7 +366,8 @@
         "sparkfun: SparkFun 241",
         "sparkfun: SparkFun 339",
         "adafruit: Snowglobe"
-      ]
+      ],
+      "m5stack": 0
     }
   ],
   "unclassified_count": 215,
@@ -23260,6 +23318,5777 @@
       "tags": [],
       "confidence": "high",
       "reason": "keyword:spectacle light"
+    },
+    {
+      "maker": "m5stack",
+      "id": "A013",
+      "dir": "Products/A013_Frame",
+      "name": "Frame",
+      "recovered_name": null,
+      "category": "cases",
+      "category_ja": "ケース / 筐体",
+      "category_en": "Cases / enclosures",
+      "tags": [
+        "accessory"
+      ],
+      "confidence": "high",
+      "reason": "override:A013_Frame",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "accessory",
+        "slug": "Frame",
+        "url": "https://docs.m5stack.com/en/accessory/Frame"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "A014-D",
+      "dir": "Products/A014-D_Base_M5GO_Bottom3",
+      "name": "Base M5GO Bottom3",
+      "recovered_name": null,
+      "category": "power",
+      "category_ja": "電源 / バッテリー",
+      "category_en": "Power / batteries",
+      "tags": [
+        "core",
+        "base"
+      ],
+      "confidence": "high",
+      "reason": "override:A014-D_Base_M5GO_Bottom3",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "base",
+        "slug": "Base_M5GO_Bottom3",
+        "url": "https://docs.m5stack.com/en/base/Base_M5GO_Bottom3"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "A068",
+      "dir": "Products/A068_M5Camera‑Battery",
+      "name": "M5Camera-Battery",
+      "recovered_name": null,
+      "category": "power",
+      "category_ja": "電源 / バッテリー",
+      "category_en": "Power / batteries",
+      "tags": [
+        "accessory"
+      ],
+      "confidence": "high",
+      "reason": "override:A068_M5Camera‑Battery",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "accessory",
+        "slug": "M5Camera-Battery",
+        "url": "https://docs.m5stack.com/en/accessory/M5Camera-Battery"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "A086",
+      "dir": "Products/A086_Atom_Mate",
+      "name": "Atom Mate",
+      "recovered_name": null,
+      "category": "cases",
+      "category_ja": "ケース / 筐体",
+      "category_en": "Cases / enclosures",
+      "tags": [],
+      "confidence": "high",
+      "reason": "override:A086_Atom_Mate",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "atom",
+        "slug": "Atom_Mate",
+        "url": "https://docs.m5stack.com/en/atom/Atom_Mate"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "A151",
+      "dir": "Products/A151_Atomic_Battery_Base",
+      "name": "Atomic Battery Base",
+      "recovered_name": null,
+      "category": "power",
+      "category_ja": "電源 / バッテリー",
+      "category_en": "Power / batteries",
+      "tags": [
+        "atomic",
+        "base"
+      ],
+      "confidence": "high",
+      "reason": "override:A151_Atomic_Battery_Base",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "atom",
+        "slug": "Atomic_Battery_Base",
+        "url": "https://docs.m5stack.com/en/atom/Atomic_Battery_Base"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "A160",
+      "dir": "Products/A160_StamPLC_AC",
+      "name": "StamPLC AC",
+      "recovered_name": null,
+      "category": "power",
+      "category_ja": "電源 / バッテリー",
+      "category_en": "Power / batteries",
+      "tags": [
+        "stamp"
+      ],
+      "confidence": "high",
+      "reason": "override:A160_StamPLC_AC",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "stamplc",
+        "slug": "StamPLC_AC",
+        "url": "https://docs.m5stack.com/en/stamplc/StamPLC_AC"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "A164",
+      "dir": "Products/A164_Tab5_Keyboard",
+      "name": "Tab5 Keyboard",
+      "recovered_name": null,
+      "category": "switches",
+      "category_ja": "スイッチ / 入力デバイス",
+      "category_en": "Switches / input",
+      "tags": [],
+      "confidence": "high",
+      "reason": "override:A164_Tab5_Keyboard",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "tab5",
+        "slug": "Tab5_Keyboard",
+        "url": "https://docs.m5stack.com/en/tab5/Tab5_Keyboard"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "AI-003-Pro",
+      "dir": "Products/AI-003-Pro_AI_Pyramid-Pro",
+      "name": "AI Pyramid-pro",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "ai_hardware",
+        "slug": "AI_Pyramid-Pro",
+        "url": "https://docs.m5stack.com/en/ai_hardware/AI_Pyramid-Pro"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "AI-003",
+      "dir": "Products/AI-003_AI_Pyramid",
+      "name": "AI Pyramid",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "ai_hardware",
+        "slug": "AI_Pyramid",
+        "url": "https://docs.m5stack.com/en/ai_hardware/AI_Pyramid"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "C008-B-V11",
+      "dir": "Products/C008-B-V11_Atom-Matrix_v1.1",
+      "name": "Atom-matrix v1.1",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Atom-Matrix_v1.1",
+        "url": "https://docs.m5stack.com/en/core/Atom-Matrix_v1.1"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "C008-B",
+      "dir": "Products/C008-B_Atom-Matrix",
+      "name": "Atom-matrix",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Atom-Matrix",
+        "url": "https://docs.m5stack.com/en/core/Atom-Matrix"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "C008-C",
+      "dir": "Products/C008-C_Atom_Voice",
+      "name": "Atom Voice",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "atom",
+        "slug": "Atom_Voice",
+        "url": "https://docs.m5stack.com/en/atom/Atom_Voice"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "C008",
+      "dir": "Products/C008_Atom-Lite",
+      "name": "Atom-lite",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Atom-Lite",
+        "url": "https://docs.m5stack.com/en/core/Atom-Lite"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "C050-B",
+      "dir": "Products/C050-B_Stamp-Pico",
+      "name": "Stamp-pico",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "stamp",
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Stamp-Pico",
+        "url": "https://docs.m5stack.com/en/core/Stamp-Pico"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "C056-B",
+      "dir": "Products/C056-B_Stamp-C3",
+      "name": "Stamp-C3",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "stamp",
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Stamp-C3",
+        "url": "https://docs.m5stack.com/en/core/Stamp-C3"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "C122-B",
+      "dir": "Products/C122-B_Stamp-C3U",
+      "name": "Stamp-C3U",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "stamp",
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Stamp-C3U",
+        "url": "https://docs.m5stack.com/en/core/Stamp-C3U"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "C123",
+      "dir": "Products/C123_AtomS3",
+      "name": "AtomS3",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": null
+    },
+    {
+      "maker": "m5stack",
+      "id": "C124",
+      "dir": "Products/C124_AtomS3-Lite",
+      "name": "AtomS3-Lite",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "AtomS3-Lite",
+        "url": "https://docs.m5stack.com/en/core/AtomS3-Lite"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "C125",
+      "dir": "Products/C125_NanoC6",
+      "name": "NanoC6",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "NanoC6",
+        "url": "https://docs.m5stack.com/en/core/NanoC6"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "C126-CAM",
+      "dir": "Products/C126-CAM_AtomS3R-CAM",
+      "name": "AtomS3R-CAM",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "AtomS3R-CAM",
+        "url": "https://docs.m5stack.com/en/core/AtomS3R-CAM"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "C126-ECHO",
+      "dir": "Products/C126-ECHO_Atom_VoiceS3R",
+      "name": "Atom VoiceS3R",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Atom_VoiceS3R",
+        "url": "https://docs.m5stack.com/en/core/Atom_VoiceS3R"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "C126-Ext",
+      "dir": "Products/C126-Ext_AtomS3R-Ext",
+      "name": "AtomS3R-Ext",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "AtomS3R-Ext",
+        "url": "https://docs.m5stack.com/en/core/AtomS3R-Ext"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "C126-M12",
+      "dir": "Products/C126-M12_AtomS3R-M12",
+      "name": "AtomS3R-M12",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "AtomS3R-M12",
+        "url": "https://docs.m5stack.com/en/core/AtomS3R-M12"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "C126",
+      "dir": "Products/C126_AtomS3R",
+      "name": "AtomS3R",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "AtomS3R",
+        "url": "https://docs.m5stack.com/en/core/AtomS3R"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "C139",
+      "dir": "Products/C139_PaperS3",
+      "name": "PaperS3",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "PaperS3",
+        "url": "https://docs.m5stack.com/en/core/PaperS3"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "C145",
+      "dir": "Products/C145_Tab5",
+      "name": "Tab5",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "override:C145_Tab5",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Tab5",
+        "url": "https://docs.m5stack.com/en/core/Tab5"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "C148",
+      "dir": "Products/C148_PowerHub",
+      "name": "Powerhub",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "override:C148_PowerHub",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "PowerHub",
+        "url": "https://docs.m5stack.com/en/core/PowerHub"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "C149",
+      "dir": "Products/C149_NanoH2",
+      "name": "NanoH2",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "NanoH2",
+        "url": "https://docs.m5stack.com/en/core/NanoH2"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "C151",
+      "dir": "Products/C151_PaperColor",
+      "name": "Papercolor",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "PaperColor",
+        "url": "https://docs.m5stack.com/en/core/PaperColor"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "C152",
+      "dir": "Products/C152_StopWatch",
+      "name": "Stopwatch",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "override:C152_StopWatch",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "StopWatch",
+        "url": "https://docs.m5stack.com/en/core/StopWatch"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "C153-Lite",
+      "dir": "Products/C153-Lite_PaperMono-Lite",
+      "name": "Papermono-lite",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "PaperMono-Lite",
+        "url": "https://docs.m5stack.com/en/core/PaperMono-Lite"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "C153",
+      "dir": "Products/C153_PaperMono",
+      "name": "Papermono",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "PaperMono",
+        "url": "https://docs.m5stack.com/en/core/PaperMono"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "C154",
+      "dir": "Products/C154_CardputerZero",
+      "name": "Cardputerzero",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "CardputerZero",
+        "slug": "CardputerZero",
+        "url": "https://docs.m5stack.com/en/CardputerZero/CardputerZero"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "C158",
+      "dir": "Products/C158_CoreMatrix",
+      "name": "Corematrix",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "CoreMatrix",
+        "url": "https://docs.m5stack.com/en/core/CoreMatrix"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "D062-M12",
+      "dir": "Products/D062-M12_AtomS3R-M12_Volcengine_Kit",
+      "name": "AtomS3R-M12 Volcengine Kit",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "AtomS3R-M12_Volcengine_Kit",
+        "url": "https://docs.m5stack.com/en/core/AtomS3R-M12_Volcengine_Kit"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "DK001",
+      "dir": "Products/DK001_Arduino_Nesso_N1",
+      "name": "Arduino Nesso N1",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Arduino_Nesso_N1",
+        "url": "https://docs.m5stack.com/en/core/Arduino_Nesso_N1"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K001",
+      "dir": "Products/K001",
+      "name": "K001",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [],
+      "confidence": "medium",
+      "reason": "sku-prefix:K",
+      "adafruit_official": null,
+      "m5_docs": null
+    },
+    {
+      "maker": "m5stack",
+      "id": "K001-V27",
+      "dir": "Products/K001-V27_Basic_v2.7",
+      "name": "Basic v2.7",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Basic_v2.7",
+        "url": "https://docs.m5stack.com/en/core/Basic_v2.7"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K006-V27",
+      "dir": "Products/K006-V27_M5GO_IoT_Kit_v2.7",
+      "name": "M5GO Iot Kit v2.7",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "M5GO_IoT_Kit_v2.7",
+        "url": "https://docs.m5stack.com/en/core/M5GO_IoT_Kit_v2.7"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K007-V27",
+      "dir": "Products/K007-V27_Fire_v2.7",
+      "name": "Fire v2.7",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Fire_v2.7",
+        "url": "https://docs.m5stack.com/en/core/Fire_v2.7"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K009-F",
+      "dir": "Products/K009-F_Watch",
+      "name": "Watch",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": null
+    },
+    {
+      "maker": "m5stack",
+      "id": "K010-AWS-V13",
+      "dir": "Products/K010-AWS-V13_Core2_For_AWS_v1.3",
+      "name": "Core2 For AWS v1.3",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Core2_For_AWS_v1.3",
+        "url": "https://docs.m5stack.com/en/core/Core2_For_AWS_v1.3"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K010-AWS",
+      "dir": "Products/K010-AWS_Core2_For_AWS",
+      "name": "Core2 For AWS",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Core2_For_AWS",
+        "url": "https://docs.m5stack.com/en/core/Core2_For_AWS"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K010-V11",
+      "dir": "Products/K010-V11_Core2_v1.1",
+      "name": "Core2 v1.1",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Core2_v1.1",
+        "url": "https://docs.m5stack.com/en/core/Core2_v1.1"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K010-V13",
+      "dir": "Products/K010-V13_Core2_v1.3",
+      "name": "Core2 v1.3",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Core2_v1.3",
+        "url": "https://docs.m5stack.com/en/core/Core2_v1.3"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K010",
+      "dir": "Products/K010_Core2",
+      "name": "Core2",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Core2",
+        "url": "https://docs.m5stack.com/en/core/Core2"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K011-B-V11",
+      "dir": "Products/K011-B-V11_Base_PLC-M12_v1.1",
+      "name": "Base PLC-M12 v1.1",
+      "recovered_name": null,
+      "category": "cases",
+      "category_ja": "ケース / 筐体",
+      "category_en": "Cases / enclosures",
+      "tags": [
+        "base"
+      ],
+      "confidence": "medium",
+      "reason": "docs-section:base/Base_PLC-M12_v1.1",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "base",
+        "slug": "Base_PLC-M12_v1.1",
+        "url": "https://docs.m5stack.com/en/base/Base_PLC-M12_v1.1"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K016-C",
+      "dir": "Products/K016-C_StickC",
+      "name": "Stickc",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "stick"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": null
+    },
+    {
+      "maker": "m5stack",
+      "id": "K016-P",
+      "dir": "Products/K016-P_StickC-Plus",
+      "name": "Stickc-plus",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core",
+        "stick"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "StickC-Plus",
+        "url": "https://docs.m5stack.com/en/core/StickC-Plus"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K016-T2",
+      "dir": "Products/K016-T2_StickT2",
+      "name": "StickT2",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core",
+        "stick"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "StickT2",
+        "url": "https://docs.m5stack.com/en/core/StickT2"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K025",
+      "dir": "Products/K025_Base15",
+      "name": "Base15",
+      "recovered_name": null,
+      "category": "cases",
+      "category_ja": "ケース / 筐体",
+      "category_en": "Cases / enclosures",
+      "tags": [],
+      "confidence": "high",
+      "reason": "override:K025_Base15",
+      "adafruit_official": null,
+      "m5_docs": null
+    },
+    {
+      "maker": "m5stack",
+      "id": "K026",
+      "dir": "Products/K026_Base26",
+      "name": "Base26",
+      "recovered_name": null,
+      "category": "cases",
+      "category_ja": "ケース / 筐体",
+      "category_en": "Cases / enclosures",
+      "tags": [],
+      "confidence": "high",
+      "reason": "override:K026_Base26",
+      "adafruit_official": null,
+      "m5_docs": null
+    },
+    {
+      "maker": "m5stack",
+      "id": "K034",
+      "dir": "Products/K034_Tough",
+      "name": "Tough",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Tough",
+        "url": "https://docs.m5stack.com/en/core/Tough"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K036-B",
+      "dir": "Products/K036-B_RoverC-Pro",
+      "name": "Roverc-pro",
+      "recovered_name": null,
+      "category": "robotics-hw",
+      "category_ja": "ロボット機構",
+      "category_en": "Robotics hardware",
+      "tags": [
+        "hat"
+      ],
+      "confidence": "high",
+      "reason": "override:K036-B_RoverC-Pro",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "hat",
+        "slug": "RoverC-Pro",
+        "url": "https://docs.m5stack.com/en/hat/RoverC-Pro"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K037",
+      "dir": "Products/K037_BaseX",
+      "name": "Basex",
+      "recovered_name": null,
+      "category": "prototyping",
+      "category_ja": "プロトタイピング",
+      "category_en": "Prototyping",
+      "tags": [
+        "base"
+      ],
+      "confidence": "high",
+      "reason": "override:K037_BaseX",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "base",
+        "slug": "Base_X",
+        "url": "https://docs.m5stack.com/en/base/Base_X"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K048",
+      "dir": "Products/K048_CoreInk",
+      "name": "Coreink",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "CoreInk",
+        "url": "https://docs.m5stack.com/en/core/CoreInk"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K049-B",
+      "dir": "Products/K049-B_Paper_v1.1",
+      "name": "Paper v1.1",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Paper_v1.1",
+        "url": "https://docs.m5stack.com/en/core/Paper_v1.1"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K051-B",
+      "dir": "Products/K051-B_Stamp-Pico_DIY_Kit",
+      "name": "Stamp-pico DIY Kit",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "stamp",
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Stamp-Pico_DIY_Kit",
+        "url": "https://docs.m5stack.com/en/core/Stamp-Pico_DIY_Kit"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K051",
+      "dir": "Products/K051_Stamp-Pico_Mate",
+      "name": "Stamp-pico Mate",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "stamp",
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Stamp-Pico_Mate",
+        "url": "https://docs.m5stack.com/en/core/Stamp-Pico_Mate"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K056",
+      "dir": "Products/K056_Stamp-C3_Mate",
+      "name": "Stamp-C3 Mate",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "stamp",
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Stamp-C3_Mate",
+        "url": "https://docs.m5stack.com/en/core/Stamp-C3_Mate"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K116",
+      "dir": "Products/K116_Base_AC_Power",
+      "name": "Base AC Power",
+      "recovered_name": null,
+      "category": "power",
+      "category_ja": "電源 / バッテリー",
+      "category_en": "Power / batteries",
+      "tags": [
+        "base"
+      ],
+      "confidence": "high",
+      "reason": "override:K116_Base_AC_Power",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "base",
+        "slug": "Base_AC_Power",
+        "url": "https://docs.m5stack.com/en/base/Base_AC_Power"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K122",
+      "dir": "Products/K122_Stamp-C3U_Mate",
+      "name": "Stamp-C3U Mate",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "stamp",
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Stamp-C3U_Mate",
+        "url": "https://docs.m5stack.com/en/core/Stamp-C3U_Mate"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K123",
+      "dir": "Products/K123_Station-485",
+      "name": "Station-485",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "medium",
+      "reason": "docs-section:core/Station-485",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Station-485",
+        "url": "https://docs.m5stack.com/en/core/Station-485"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K124-B",
+      "dir": "Products/K124-B_Station-Bat",
+      "name": "Station-bat",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "medium",
+      "reason": "docs-section:core/Station-Bat",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Station-Bat",
+        "url": "https://docs.m5stack.com/en/core/Station-Bat"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K125",
+      "dir": "Products/K125_AtomS3U",
+      "name": "AtomS3U",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "AtomS3U",
+        "url": "https://docs.m5stack.com/en/core/AtomS3U"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K127",
+      "dir": "Products/K127_CM4Stack",
+      "name": "CM4Stack",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "CM4Stack",
+        "url": "https://docs.m5stack.com/en/core/CM4Stack"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K128-Lite",
+      "dir": "Products/K128-Lite_CoreS3-Lite",
+      "name": "CoreS3-Lite",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "CoreS3-Lite",
+        "url": "https://docs.m5stack.com/en/core/CoreS3-Lite"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K128-SE",
+      "dir": "Products/K128-SE_CoreS3-SE",
+      "name": "CoreS3-SE",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "CoreS3-SE",
+        "url": "https://docs.m5stack.com/en/core/CoreS3-SE"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K128",
+      "dir": "Products/K128_CoreS3",
+      "name": "CoreS3",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "CoreS3",
+        "url": "https://docs.m5stack.com/en/core/CoreS3"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K129-V11",
+      "dir": "Products/K129-V11_Capsule_v1.1",
+      "name": "Capsule v1.1",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Capsule_v1.1",
+        "url": "https://docs.m5stack.com/en/core/Capsule_v1.1"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K129",
+      "dir": "Products/K129_Capsule",
+      "name": "Capsule",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Capsule",
+        "url": "https://docs.m5stack.com/en/core/Capsule"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K130-V11",
+      "dir": "Products/K130-V11_Dial_v1.1",
+      "name": "Dial v1.1",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Dial_v1.1",
+        "url": "https://docs.m5stack.com/en/core/Dial_v1.1"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K130",
+      "dir": "Products/K130_Dial",
+      "name": "Dial",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Dial",
+        "url": "https://docs.m5stack.com/en/core/Dial"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K131-V11",
+      "dir": "Products/K131-V11_Air_Quality_v1.1",
+      "name": "Air Quality v1.1",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Air_Quality_v1.1",
+        "url": "https://docs.m5stack.com/en/core/Air_Quality_v1.1"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K131",
+      "dir": "Products/K131_Air_Quality",
+      "name": "Air Quality",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Air_Quality",
+        "url": "https://docs.m5stack.com/en/core/Air_Quality"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K132-Adv",
+      "dir": "Products/K132-Adv_Cardputer-Adv",
+      "name": "Cardputer-adv",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Cardputer-Adv",
+        "url": "https://docs.m5stack.com/en/core/Cardputer-Adv"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K132-V11",
+      "dir": "Products/K132-V11_Cardputer_v1.1",
+      "name": "Cardputer v1.1",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Cardputer_v1.1",
+        "url": "https://docs.m5stack.com/en/core/Cardputer_v1.1"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K132",
+      "dir": "Products/K132_Cardputer",
+      "name": "Cardputer",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Cardputer",
+        "url": "https://docs.m5stack.com/en/core/Cardputer"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K134-V11",
+      "dir": "Products/K134-V11_DinMeter_v1.1",
+      "name": "Dinmeter v1.1",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "DinMeter_v1.1",
+        "url": "https://docs.m5stack.com/en/core/DinMeter_v1.1"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K134",
+      "dir": "Products/K134_DinMeter",
+      "name": "Dinmeter",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "DinMeter",
+        "url": "https://docs.m5stack.com/en/core/DinMeter"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K135",
+      "dir": "Products/K135_CoreMP135",
+      "name": "CoreMP135",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "CoreMP135",
+        "url": "https://docs.m5stack.com/en/core/CoreMP135"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K136",
+      "dir": "Products/K136_VAMeter",
+      "name": "VAMeter",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "VAMeter",
+        "url": "https://docs.m5stack.com/en/core/VAMeter"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K138",
+      "dir": "Products/K138_StampFly",
+      "name": "Stampfly",
+      "recovered_name": null,
+      "category": "robotics-hw",
+      "category_ja": "ロボット機構",
+      "category_en": "Robotics hardware",
+      "tags": [],
+      "confidence": "high",
+      "reason": "keyword:robotics-hw",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "app",
+        "slug": "StampFly",
+        "url": "https://docs.m5stack.com/en/app/StampFly"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K141",
+      "dir": "Products/K141_StamPLC",
+      "name": "StamPLC",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "stamp",
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "StamPLC",
+        "url": "https://docs.m5stack.com/en/core/StamPLC"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K143",
+      "dir": "Products/K143_LLM630_Compute_Kit",
+      "name": "LLM630 Compute Kit",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "override:K143_LLM630_Compute_Kit",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "LLM630_Compute_Kit",
+        "url": "https://docs.m5stack.com/en/core/LLM630_Compute_Kit"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K146",
+      "dir": "Products/K146_Xiaozhi_Card_Kit",
+      "name": "Xiaozhi Card Kit",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Xiaozhi_Card_Kit",
+        "url": "https://docs.m5stack.com/en/core/Xiaozhi_Card_Kit"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K147-CAM",
+      "dir": "Products/K147-CAM_AtomS3R-CAM_AI_Chatbot",
+      "name": "AtomS3R-CAM AI Chatbot",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "AtomS3R-CAM_AI_Chatbot",
+        "url": "https://docs.m5stack.com/en/core/AtomS3R-CAM_AI_Chatbot"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K147",
+      "dir": "Products/K147_AtomS3R-AI_Chatbot",
+      "name": "AtomS3R-AI Chatbot",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "AtomS3R-AI_Chatbot",
+        "url": "https://docs.m5stack.com/en/core/AtomS3R-AI_Chatbot"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K149",
+      "dir": "Products/K149_CoreS3_Thread_BR",
+      "name": "CoreS3 Thread BR",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "CoreS3_Thread_BR",
+        "url": "https://docs.m5stack.com/en/core/CoreS3_Thread_BR"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K150",
+      "dir": "Products/K150_StickS3",
+      "name": "StickS3",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core",
+        "stick"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "StickS3",
+        "url": "https://docs.m5stack.com/en/core/StickS3"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K151",
+      "dir": "Products/K151_StackChan",
+      "name": "Stackchan",
+      "recovered_name": null,
+      "category": "robotics-hw",
+      "category_ja": "ロボット機構",
+      "category_en": "Robotics hardware",
+      "tags": [],
+      "confidence": "high",
+      "reason": "override:K151_StackChan",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "StackChan",
+        "slug": "StackChan",
+        "url": "https://docs.m5stack.com/en/StackChan/StackChan"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K152",
+      "dir": "Products/K152_Cardputer_Mesh_Kit",
+      "name": "Cardputer Mesh Kit",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Cardputer_Mesh_Kit",
+        "url": "https://docs.m5stack.com/en/core/Cardputer_Mesh_Kit"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "K159-B",
+      "dir": "Products/K159-B_PaperDIY_Complete_Kit",
+      "name": "PaperDIY Complete Kit",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "PaperDIY_Complete_Kit",
+        "url": "https://docs.m5stack.com/en/core/PaperDIY_Complete_Kit"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "M001",
+      "dir": "Products/M001_Module_Proto",
+      "name": "Module Proto",
+      "recovered_name": null,
+      "category": "prototyping",
+      "category_ja": "プロトタイピング",
+      "category_en": "Prototyping",
+      "tags": [
+        "module"
+      ],
+      "confidence": "high",
+      "reason": "keyword:prototyping",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "module",
+        "slug": "Module_Proto",
+        "url": "https://docs.m5stack.com/en/module/Module_Proto"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "M123",
+      "dir": "Products/M123_Module_ExtPort_For_Core2",
+      "name": "Module Extport For Core2",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "module",
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "module",
+        "slug": "Module_ExtPort_For_Core2",
+        "url": "https://docs.m5stack.com/en/module/Module_ExtPort_For_Core2"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "M132",
+      "dir": "Products/M132_Base_DIN",
+      "name": "Base DIN",
+      "recovered_name": null,
+      "category": "cases",
+      "category_ja": "ケース / 筐体",
+      "category_en": "Cases / enclosures",
+      "tags": [
+        "base"
+      ],
+      "confidence": "high",
+      "reason": "keyword:cases",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "base",
+        "slug": "Base_DIN",
+        "url": "https://docs.m5stack.com/en/base/Base_DIN"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "M140",
+      "dir": "Products/M140_Module_LLM",
+      "name": "Module LLM",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "module"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "module",
+        "slug": "Module_LLM",
+        "url": "https://docs.m5stack.com/en/module/Module_LLM"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "S007-PIN127",
+      "dir": "Products/S007-PIN127_Stamp-S3_PIN1.27",
+      "name": "Stamp-S3 PIN1.27",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "stamp",
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Stamp-S3_PIN1.27",
+        "url": "https://docs.m5stack.com/en/core/Stamp-S3_PIN1.27"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "S007-PIN254-V033",
+      "dir": "Products/S007-PIN254-V033_Stamp-S3A_PIN2.54",
+      "name": "Stamp-S3A PIN2.54",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "stamp",
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Stamp-S3A_PIN2.54",
+        "url": "https://docs.m5stack.com/en/core/Stamp-S3A_PIN2.54"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "S007-PIN254",
+      "dir": "Products/S007-PIN254_Stamp-S3_PIN2.54",
+      "name": "Stamp-S3 PIN2.54",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "stamp",
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Stamp-S3_PIN2.54",
+        "url": "https://docs.m5stack.com/en/core/Stamp-S3_PIN2.54"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "S007-V033",
+      "dir": "Products/S007-V033_Stamp-S3A",
+      "name": "Stamp-S3A",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "stamp",
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Stamp-S3A",
+        "url": "https://docs.m5stack.com/en/core/Stamp-S3A"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "S007",
+      "dir": "Products/S007_Stamp-S3",
+      "name": "Stamp-S3",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "stamp",
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Stamp-S3",
+        "url": "https://docs.m5stack.com/en/core/Stamp-S3"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "S012",
+      "dir": "Products/S012_Stamp_C6LoRa",
+      "name": "Stamp C6LoRa",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "stamp",
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "override:S012_Stamp_C6LoRa",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Stamp_C6LoRa",
+        "url": "https://docs.m5stack.com/en/core/Stamp_C6LoRa"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "S015-DIP",
+      "dir": "Products/S015-DIP_Stamp-S3Bat_DIP",
+      "name": "Stamp-S3Bat DIP",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "stamp",
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Stamp-S3Bat_DIP",
+        "url": "https://docs.m5stack.com/en/core/Stamp-S3Bat_DIP"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "S015",
+      "dir": "Products/S015_Stamp-S3Bat",
+      "name": "Stamp-S3Bat",
+      "recovered_name": null,
+      "category": "dev-boards",
+      "category_ja": "マイコンボード",
+      "category_en": "Development boards",
+      "tags": [
+        "stamp",
+        "core"
+      ],
+      "confidence": "high",
+      "reason": "keyword:dev-boards",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "core",
+        "slug": "Stamp-S3Bat",
+        "url": "https://docs.m5stack.com/en/core/Stamp-S3Bat"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "S017",
+      "dir": "Products/S017_Stamp_UWB",
+      "name": "Stamp UWB",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "stamp"
+      ],
+      "confidence": "high",
+      "reason": "override:S017_Stamp_UWB",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "stamp",
+        "slug": "Stamp_UWB",
+        "url": "https://docs.m5stack.com/en/stamp/Stamp_UWB"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "S021",
+      "dir": "Products/S021_Stamp_Timer_Power2",
+      "name": "Stamp Timer Power2",
+      "recovered_name": null,
+      "category": "power",
+      "category_ja": "電源 / バッテリー",
+      "category_en": "Power / batteries",
+      "tags": [
+        "stamp"
+      ],
+      "confidence": "high",
+      "reason": "override:S021_Stamp_Timer_Power2",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "stamp",
+        "slug": "Stamp_Timer_Power2",
+        "url": "https://docs.m5stack.com/en/stamp/Stamp_Timer_Power2"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U001-C",
+      "dir": "Products/U001-C_Unit_ENV-III",
+      "name": "Unit ENV-III",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_ENV-III",
+        "url": "https://docs.m5stack.com/en/unit/Unit_ENV-III"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U002",
+      "dir": "Products/U002_Unit_IR",
+      "name": "Unit IR",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:comms",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_IR",
+        "url": "https://docs.m5stack.com/en/unit/Unit_IR"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U003",
+      "dir": "Products/U003_Unit_RGB",
+      "name": "Unit RGB",
+      "recovered_name": null,
+      "category": "leds",
+      "category_ja": "LED / 照明",
+      "category_en": "LEDs / lighting",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:leds",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_RGB",
+        "url": "https://docs.m5stack.com/en/unit/Unit_RGB"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U004",
+      "dir": "Products/U004_Unit_PIR",
+      "name": "Unit PIR",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_PIR",
+        "url": "https://docs.m5stack.com/en/unit/Unit_PIR"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U005",
+      "dir": "Products/U005_Unit_Angle",
+      "name": "Unit Angle",
+      "recovered_name": null,
+      "category": "switches",
+      "category_ja": "スイッチ / 入力デバイス",
+      "category_en": "Switches / input",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:switches",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Angle",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Angle"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U006",
+      "dir": "Products/U006_Unit_Hub",
+      "name": "Unit Hub",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:comms",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Hub",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Hub"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U008",
+      "dir": "Products/U008_Unit_Finger",
+      "name": "Unit Finger",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Finger",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Finger"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U009",
+      "dir": "Products/U009_Unit_Color",
+      "name": "Unit Color",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Color",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Color"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U010",
+      "dir": "Products/U010_Unit_ToF",
+      "name": "Unit Tof",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_ToF",
+        "url": "https://docs.m5stack.com/en/unit/Unit_ToF"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U011-B",
+      "dir": "Products/U011-B_Unit_EXT.IO2",
+      "name": "Unit EXT.IO2",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "override:U011-B_Unit_EXT.IO2",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_EXT.IO2",
+        "url": "https://docs.m5stack.com/en/unit/Unit_EXT.IO2"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U012-B",
+      "dir": "Products/U012-B_Unit_DAC2",
+      "name": "Unit DAC2",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "override:U012-B_Unit_DAC2",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_DAC2",
+        "url": "https://docs.m5stack.com/en/unit/Unit_DAC2"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U013-V11",
+      "dir": "Products/U013-V11_Unit_ADC_v1.1",
+      "name": "Unit ADC v1.1",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_ADC_v1.1",
+        "url": "https://docs.m5stack.com/en/unit/Unit_ADC_v1.1"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U016",
+      "dir": "Products/U016_Unit_Thermal",
+      "name": "Unit Thermal",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Thermal",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Thermal"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U019",
+      "dir": "Products/U019_Unit_Earth",
+      "name": "Unit Earth",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Earth",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Earth"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U020",
+      "dir": "Products/U020_Unit_3.96",
+      "name": "Unit 3.96",
+      "recovered_name": null,
+      "category": "connectors",
+      "category_ja": "コネクタ / ケーブル",
+      "category_en": "Connectors / cables",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "override:U020_Unit_3.96",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_3.96",
+        "url": "https://docs.m5stack.com/en/unit/Unit_3.96"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U021",
+      "dir": "Products/U021_Unit_Light",
+      "name": "Unit Light",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Light",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Light"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U022",
+      "dir": "Products/U022_Unit_Proto",
+      "name": "Unit Proto",
+      "recovered_name": null,
+      "category": "prototyping",
+      "category_ja": "プロトタイピング",
+      "category_en": "Prototyping",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:prototyping",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Proto",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Proto"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U023",
+      "dir": "Products/U023_Unit_Relay",
+      "name": "Unit Relay",
+      "recovered_name": null,
+      "category": "motors",
+      "category_ja": "モーター / アクチュエータ",
+      "category_en": "Motors / actuators",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:motors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Relay",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Relay"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U024-C",
+      "dir": "Products/U024-C_Unit_Joystick_v1.1",
+      "name": "Unit Joystick v1.1",
+      "recovered_name": null,
+      "category": "switches",
+      "category_ja": "スイッチ / 入力デバイス",
+      "category_en": "Switches / input",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:switches",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Joystick_v1.1",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Joystick_v1.1"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U024-V2",
+      "dir": "Products/U024-V2_Unit_Joystick2",
+      "name": "Unit Joystick2",
+      "recovered_name": null,
+      "category": "switches",
+      "category_ja": "スイッチ / 入力デバイス",
+      "category_en": "Switches / input",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:switches",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Joystick2",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Joystick2"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U025",
+      "dir": "Products/U025_Unit_Dual_Button",
+      "name": "Unit Dual Button",
+      "recovered_name": null,
+      "category": "switches",
+      "category_ja": "スイッチ / 入力デバイス",
+      "category_en": "Switches / input",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:switches",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Dual_Button",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Dual_Button"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U027",
+      "dir": "Products/U027_Unit_Button",
+      "name": "Unit Button",
+      "recovered_name": null,
+      "category": "switches",
+      "category_ja": "スイッチ / 入力デバイス",
+      "category_en": "Switches / input",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:switches",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Button",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Button"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U028",
+      "dir": "Products/U028_Unit_NCIR",
+      "name": "Unit NCIR",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_NCIR",
+        "url": "https://docs.m5stack.com/en/unit/Unit_NCIR"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U029",
+      "dir": "Products/U029_Unit_Heart",
+      "name": "Unit Heart",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Heart",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Heart"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U030",
+      "dir": "Products/U030_Unit_Weight",
+      "name": "Unit Weight",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Weight",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Weight"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U031-B",
+      "dir": "Products/U031-B_Unit_RFID2",
+      "name": "Unit RFID2",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:comms",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_RFID2",
+        "url": "https://docs.m5stack.com/en/unit/Unit_RFID2"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U032",
+      "dir": "Products/U032_V11_Unit_GPS_v1_1",
+      "name": "V11 Unit GPS v1 1",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_GPS_v1.1",
+        "url": "https://docs.m5stack.com/en/unit/Unit_GPS_v1.1"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U034",
+      "dir": "Products/U034_Unit_RS485",
+      "name": "Unit RS485",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:comms",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_RS485",
+        "url": "https://docs.m5stack.com/en/unit/Unit_RS485"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U038",
+      "dir": "Products/U038_M5Camera-X",
+      "name": "M5Camera-X",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "M5Camera-X",
+        "url": "https://docs.m5stack.com/en/unit/M5Camera-X"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U040-B-V21",
+      "dir": "Products/U040-B-V21_Unit_PaHub_v2.1",
+      "name": "Unit Pahub v2.1",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:comms",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_PaHub_v2.1",
+        "url": "https://docs.m5stack.com/en/unit/Unit_PaHub_v2.1"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U040-B",
+      "dir": "Products/U040-B_Unit_PaHub_v2.0",
+      "name": "Unit Pahub v2.0",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:comms",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_PaHub_v2.0",
+        "url": "https://docs.m5stack.com/en/unit/Unit_PaHub_v2.0"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U041-B",
+      "dir": "Products/U041-B_Unit_PbHub_v1.1",
+      "name": "Unit Pbhub v1.1",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:comms",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_PbHub_v1.1",
+        "url": "https://docs.m5stack.com/en/unit/Unit_PbHub_v1.1"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U053‑D_Hat_ENV‑III",
+      "dir": "Products/U053‑D_Hat_ENV‑III",
+      "name": "U053-D Hat ENV-III",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "hat"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "hat",
+        "slug": "Hat_ENV-III",
+        "url": "https://docs.m5stack.com/en/hat/Hat_ENV-III"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U054",
+      "dir": "Products/U054_Hat_PIR",
+      "name": "Hat PIR",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "hat"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "hat",
+        "slug": "Hat_PIR",
+        "url": "https://docs.m5stack.com/en/hat/Hat_PIR"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U056",
+      "dir": "Products/U056_Unit_Accel",
+      "name": "Unit Accel",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Accel",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Accel"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U057",
+      "dir": "Products/U057_Unit_OP90",
+      "name": "Unit OP90",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_OP90",
+        "url": "https://docs.m5stack.com/en/unit/Unit_OP90"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U058",
+      "dir": "Products/U058_Unit_OP180",
+      "name": "Unit OP180",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_OP180",
+        "url": "https://docs.m5stack.com/en/unit/Unit_OP180"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U059",
+      "dir": "Products/U059_Unit_Vibrator",
+      "name": "Unit Vibrator",
+      "recovered_name": null,
+      "category": "motors",
+      "category_ja": "モーター / アクチュエータ",
+      "category_en": "Motors / actuators",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:motors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Vibrator",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Vibrator"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U061",
+      "dir": "Products/U061_Hat_NCIR",
+      "name": "Hat NCIR",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "hat"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "hat",
+        "slug": "Hat_NCIR",
+        "url": "https://docs.m5stack.com/en/hat/Hat_NCIR"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U062",
+      "dir": "Products/U062_Hat_Thermal",
+      "name": "Hat Thermal",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "hat"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "hat",
+        "slug": "Hat_Thermal",
+        "url": "https://docs.m5stack.com/en/hat/Hat_Thermal"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U063",
+      "dir": "Products/U063_Unit_Fan",
+      "name": "Unit Fan",
+      "recovered_name": null,
+      "category": "motors",
+      "category_ja": "モーター / アクチュエータ",
+      "category_en": "Motors / actuators",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:motors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Fan",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Fan"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U064",
+      "dir": "Products/U064_Unit_Mini_Proto",
+      "name": "Unit Mini Proto",
+      "recovered_name": null,
+      "category": "prototyping",
+      "category_ja": "プロトタイピング",
+      "category_en": "Prototyping",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:prototyping",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Mini_Proto",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Mini_Proto"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U065",
+      "dir": "Products/U065_Unit_Laser_RX",
+      "name": "Unit Laser RX",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:comms",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Laser_RX",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Laser_RX"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U066",
+      "dir": "Products/U066_Unit_Laser_TX",
+      "name": "Unit Laser TX",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:comms",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Laser_TX",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Laser_TX"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U069",
+      "dir": "Products/U069_Hat_ADC",
+      "name": "Hat ADC",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "hat"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "hat",
+        "slug": "Hat_ADC",
+        "url": "https://docs.m5stack.com/en/hat/Hat_ADC"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U072",
+      "dir": "Products/U072_Hat_ToF",
+      "name": "Hat Tof",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "hat"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "hat",
+        "slug": "Hat_ToF",
+        "url": "https://docs.m5stack.com/en/hat/Hat_ToF"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U078-C",
+      "dir": "Products/U078-C_UnitV-OV7740",
+      "name": "UnitV-OV7740",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "UnitV-OV7740",
+        "url": "https://docs.m5stack.com/en/unit/UnitV-OV7740"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U078-USB",
+      "dir": "Products/U078-USB_UnitV2-USB",
+      "name": "UnitV2-USB",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:comms",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "UnitV2-USB",
+        "url": "https://docs.m5stack.com/en/unit/UnitV2-USB"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U078-V-M12",
+      "dir": "Products/U078-V-M12_UnitV-M12",
+      "name": "UnitV-M12",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "UnitV-M12",
+        "url": "https://docs.m5stack.com/en/unit/UnitV-M12"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U078‑D_UnitV2",
+      "dir": "Products/U078‑D_UnitV2",
+      "name": "U078-D UnitV2",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "UnitV2",
+        "url": "https://docs.m5stack.com/en/unit/UnitV2"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U078‑M12_UnitV2‑M12",
+      "dir": "Products/U078‑M12_UnitV2‑M12",
+      "name": "U078-M12 UnitV2-M12",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "UnitV2-M12",
+        "url": "https://docs.m5stack.com/en/unit/UnitV2-M12"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U082‑F_TimerCamera‑F",
+      "dir": "Products/U082‑F_TimerCamera‑F",
+      "name": "U082-F Timercamera-f",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "TimerCamera-F",
+        "url": "https://docs.m5stack.com/en/unit/TimerCamera-F"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U082‑X_TimerCamera‑X",
+      "dir": "Products/U082‑X_TimerCamera‑X",
+      "name": "U082-X Timercamera-x",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "TimerCamera-X",
+        "url": "https://docs.m5stack.com/en/unit/TimerCamera-X"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U084",
+      "dir": "Products/U084_Unit_Hall",
+      "name": "Unit Hall",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Hall",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Hall"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U085",
+      "dir": "Products/U085_Unit_CAN",
+      "name": "Unit CAN",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:comms",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_CAN",
+        "url": "https://docs.m5stack.com/en/unit/Unit_CAN"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U086",
+      "dir": "Products/U086_Unit_AMeter",
+      "name": "Unit AMeter",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_AMeter",
+        "url": "https://docs.m5stack.com/en/unit/Unit_AMeter"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U087",
+      "dir": "Products/U087_Unit_VMeter",
+      "name": "Unit VMeter",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_VMeter",
+        "url": "https://docs.m5stack.com/en/unit/Unit_VMeter"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U088",
+      "dir": "Products/U088_Unit_Mini_TVOC_eCO2",
+      "name": "Unit Mini TVOC eCO2",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Mini_TVOC_eCO2",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Mini_TVOC_eCO2"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U089",
+      "dir": "Products/U089_Unit_Mini_PDM",
+      "name": "Unit Mini PDM",
+      "recovered_name": null,
+      "category": "audio",
+      "category_ja": "オーディオ",
+      "category_en": "Audio",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:audio",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Mini_PDM",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Mini_PDM"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U090-B",
+      "dir": "Products/U090-B_Unit_Mini_BPS_v1.1",
+      "name": "Unit Mini BPS v1.1",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Mini_BPS_v1.1",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Mini_BPS_v1.1"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U094",
+      "dir": "Products/U094_Unit_RS485-ISO",
+      "name": "Unit RS485-ISO",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:comms",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_RS485-ISO",
+        "url": "https://docs.m5stack.com/en/unit/Unit_RS485-ISO"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U095",
+      "dir": "Products/U095_Unit_Mini_IMU",
+      "name": "Unit Mini IMU",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Mini_IMU",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Mini_IMU"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U096",
+      "dir": "Products/U096_Unit_MIC",
+      "name": "Unit MIC",
+      "recovered_name": null,
+      "category": "audio",
+      "category_ja": "オーディオ",
+      "category_en": "Audio",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:audio",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_MIC",
+        "url": "https://docs.m5stack.com/en/unit/Unit_MIC"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U097",
+      "dir": "Products/U097_Unit_4Relay",
+      "name": "Unit 4Relay",
+      "recovered_name": null,
+      "category": "motors",
+      "category_ja": "モーター / アクチュエータ",
+      "category_en": "Motors / actuators",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:motors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_4Relay",
+        "url": "https://docs.m5stack.com/en/unit/Unit_4Relay"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U098-B1",
+      "dir": "Products/U098-B1_Unit_Ultrasonic-I2C",
+      "name": "Unit Ultrasonic-I2C",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Ultrasonic-I2C",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Ultrasonic-I2C"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U098-B2",
+      "dir": "Products/U098-B2_Unit_Ultrasonic-IO",
+      "name": "Unit Ultrasonic-IO",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Ultrasonic-IO",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Ultrasonic-IO"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U100",
+      "dir": "Products/U100_Unit_UWB",
+      "name": "Unit UWB",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:comms",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_UWB",
+        "url": "https://docs.m5stack.com/en/unit/Unit_UWB"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U101",
+      "dir": "Products/U101_Unit_Watering",
+      "name": "Unit Watering",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Watering",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Watering"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U103",
+      "dir": "Products/U103_Unit_CO2",
+      "name": "Unit CO2",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_CO2",
+        "url": "https://docs.m5stack.com/en/unit/Unit_CO2"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U104",
+      "dir": "Products/U104_Unit_CO2L",
+      "name": "Unit CO2L",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_CO2L",
+        "url": "https://docs.m5stack.com/en/unit/Unit_CO2L"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U105",
+      "dir": "Products/U105_Unit_DDS",
+      "name": "Unit DDS",
+      "recovered_name": null,
+      "category": "audio",
+      "category_ja": "オーディオ",
+      "category_en": "Audio",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:audio",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_DDS",
+        "url": "https://docs.m5stack.com/en/unit/Unit_DDS"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U107",
+      "dir": "Products/U107_Unit_UHF-RFID",
+      "name": "Unit UHF-RFID",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:comms",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_UHF-RFID",
+        "url": "https://docs.m5stack.com/en/unit/Unit_UHF-RFID"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U108",
+      "dir": "Products/U108_Unit_Scales",
+      "name": "Unit Scales",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Scales",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Scales"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U110",
+      "dir": "Products/U110_Unit_ZigBee",
+      "name": "Unit Zigbee",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:comms",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_ZigBee",
+        "url": "https://docs.m5stack.com/en/unit/Unit_ZigBee"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U111-B",
+      "dir": "Products/U111-B_Unit_NBIoT2",
+      "name": "Unit NBIoT2",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:comms",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_NBIoT2",
+        "url": "https://docs.m5stack.com/en/unit/Unit_NBIoT2"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U112",
+      "dir": "Products/U112_Unit_NBIoT-CN",
+      "name": "Unit NBIoT-CN",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:comms",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_NBIoT-CN",
+        "url": "https://docs.m5stack.com/en/unit/Unit_NBIoT-CN"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U113",
+      "dir": "Products/U113_Unit_RF433R",
+      "name": "Unit RF433R",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:comms",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_RF433R",
+        "url": "https://docs.m5stack.com/en/unit/Unit_RF433R"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U114",
+      "dir": "Products/U114_Unit_RF433T",
+      "name": "Unit RF433T",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:comms",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_RF433T",
+        "url": "https://docs.m5stack.com/en/unit/Unit_RF433T"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U118",
+      "dir": "Products/U118_Hat_Heart",
+      "name": "Hat Heart",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "hat"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "hat",
+        "slug": "Hat_Heart",
+        "url": "https://docs.m5stack.com/en/hat/Hat_Heart"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U119",
+      "dir": "Products/U119_Unit_OLED",
+      "name": "Unit OLED",
+      "recovered_name": null,
+      "category": "displays",
+      "category_ja": "ディスプレイ",
+      "category_en": "Displays",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:displays",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_OLED",
+        "url": "https://docs.m5stack.com/en/unit/Unit_OLED"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U120",
+      "dir": "Products/U120_Unit_LCD",
+      "name": "Unit LCD",
+      "recovered_name": null,
+      "category": "displays",
+      "category_ja": "ディスプレイ",
+      "category_en": "Displays",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:displays",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_LCD",
+        "url": "https://docs.m5stack.com/en/unit/Unit_LCD"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U121-B-V11",
+      "dir": "Products/U121-B-V11_Unit_PoE_CAM-W_v1.1",
+      "name": "Unit PoE CAM-W v1.1",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:comms",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_PoE_CAM-W_v1.1",
+        "url": "https://docs.m5stack.com/en/unit/Unit_PoE_CAM-W_v1.1"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U122",
+      "dir": "Products/U122_Unit_SSR",
+      "name": "Unit SSR",
+      "recovered_name": null,
+      "category": "motors",
+      "category_ja": "モーター / アクチュエータ",
+      "category_en": "Motors / actuators",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:motors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_SSR",
+        "url": "https://docs.m5stack.com/en/unit/Unit_SSR"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U123",
+      "dir": "Products/U123_Unit_Fader",
+      "name": "Unit Fader",
+      "recovered_name": null,
+      "category": "switches",
+      "category_ja": "スイッチ / 入力デバイス",
+      "category_en": "Switches / input",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:switches",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Fader",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Fader"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U124",
+      "dir": "Products/U124_Unit_ID",
+      "name": "Unit ID",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:comms",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_ID",
+        "url": "https://docs.m5stack.com/en/unit/Unit_ID"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U126",
+      "dir": "Products/U126_Unit_RTC",
+      "name": "Unit RTC",
+      "recovered_name": null,
+      "category": "components",
+      "category_ja": "電子部品",
+      "category_en": "Components",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "override:U126_Unit_RTC",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_RTC",
+        "url": "https://docs.m5stack.com/en/unit/Unit_RTC"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U127",
+      "dir": "Products/U127_Unit_Gesture",
+      "name": "Unit Gesture",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Gesture",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Gesture"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U128",
+      "dir": "Products/U128_Unit_CatM",
+      "name": "Unit Catm",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:comms",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_CatM",
+        "url": "https://docs.m5stack.com/en/unit/Unit_CatM"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U130",
+      "dir": "Products/U130_Unit_Tube_Pressure",
+      "name": "Unit Tube Pressure",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Tube_Pressure",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Tube_Pressure"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U131",
+      "dir": "Products/U131_Unit_2Relay",
+      "name": "Unit 2Relay",
+      "recovered_name": null,
+      "category": "motors",
+      "category_ja": "モーター / アクチュエータ",
+      "category_en": "Motors / actuators",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:motors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_2Relay",
+        "url": "https://docs.m5stack.com/en/unit/Unit_2Relay"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U132",
+      "dir": "Products/U132_Unit_Buzzer",
+      "name": "Unit Buzzer",
+      "recovered_name": null,
+      "category": "audio",
+      "category_ja": "オーディオ",
+      "category_en": "Audio",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:audio",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Buzzer",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Buzzer"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U133-V11",
+      "dir": "Products/U133-V11_Unit_KMeter-ISO",
+      "name": "Unit KMeter-ISO",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_KMeter-ISO",
+        "url": "https://docs.m5stack.com/en/unit/Unit_KMeter-ISO"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U134",
+      "dir": "Products/U134_Hat_DLight",
+      "name": "Hat DLight",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "hat"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "hat",
+        "slug": "Hat_DLight",
+        "url": "https://docs.m5stack.com/en/hat/Hat_DLight"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U135",
+      "dir": "Products/U135_Unit_Encoder",
+      "name": "Unit Encoder",
+      "recovered_name": null,
+      "category": "switches",
+      "category_ja": "スイッチ / 入力デバイス",
+      "category_en": "Switches / input",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:switches",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Encoder",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Encoder"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U136",
+      "dir": "Products/U136_Unit_DLight",
+      "name": "Unit DLight",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_DLight",
+        "url": "https://docs.m5stack.com/en/unit/Unit_DLight"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U137",
+      "dir": "Products/U137_Unit_CatM_GNSS",
+      "name": "Unit Catm GNSS",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:gps/gnss (sensor)",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_CatM_GNSS",
+        "url": "https://docs.m5stack.com/en/unit/Unit_CatM_GNSS"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U138",
+      "dir": "Products/U138_Unit_PoESP32",
+      "name": "Unit PoESP32",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:comms",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_PoESP32",
+        "url": "https://docs.m5stack.com/en/unit/Unit_PoESP32"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U139",
+      "dir": "Products/U139_Unit_ACSSR",
+      "name": "Unit ACSSR",
+      "recovered_name": null,
+      "category": "motors",
+      "category_ja": "モーター / アクチュエータ",
+      "category_en": "Motors / actuators",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:motors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_ACSSR",
+        "url": "https://docs.m5stack.com/en/unit/Unit_ACSSR"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U140",
+      "dir": "Products/U140_Unit_DCSSR",
+      "name": "Unit DCSSR",
+      "recovered_name": null,
+      "category": "motors",
+      "category_ja": "モーター / アクチュエータ",
+      "category_en": "Motors / actuators",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:motors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_DCSSR",
+        "url": "https://docs.m5stack.com/en/unit/Unit_DCSSR"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U144",
+      "dir": "Products/U144_Unit_Key",
+      "name": "Unit Key",
+      "recovered_name": null,
+      "category": "switches",
+      "category_ja": "スイッチ / 入力デバイス",
+      "category_en": "Switches / input",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:switches",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Key",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Key"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U145",
+      "dir": "Products/U145_Unit_Limit",
+      "name": "Unit Limit",
+      "recovered_name": null,
+      "category": "switches",
+      "category_ja": "スイッチ / 入力デバイス",
+      "category_en": "Switches / input",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:limit switch",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Limit",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Limit"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U148",
+      "dir": "Products/U148_Unit_Grove_to_Grove",
+      "name": "Unit Grove To Grove",
+      "recovered_name": null,
+      "category": "connectors",
+      "category_ja": "コネクタ / ケーブル",
+      "category_en": "Connectors / cables",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:connectors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Grove_to_Grove",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Grove_to_Grove"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U149",
+      "dir": "Products/U149_Unit_Thermal2",
+      "name": "Unit Thermal2",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Thermal2",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Thermal2"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U150",
+      "dir": "Products/U150_Unit_NCIR2",
+      "name": "Unit NCIR2",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_NCIR2",
+        "url": "https://docs.m5stack.com/en/unit/Unit_NCIR2"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U151",
+      "dir": "Products/U151_Unit_TypeC_to_Grove",
+      "name": "Unit Typec To Grove",
+      "recovered_name": null,
+      "category": "connectors",
+      "category_ja": "コネクタ / ケーブル",
+      "category_en": "Connectors / cables",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:connectors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_TypeC_to_Grove",
+        "url": "https://docs.m5stack.com/en/unit/Unit_TypeC_to_Grove"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U152",
+      "dir": "Products/U152_Unit_FlashLight",
+      "name": "Unit Flashlight",
+      "recovered_name": null,
+      "category": "leds",
+      "category_ja": "LED / 照明",
+      "category_en": "LEDs / lighting",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:leds",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_FlashLight",
+        "url": "https://docs.m5stack.com/en/unit/Unit_FlashLight"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U153",
+      "dir": "Products/U153_Unit_8Encoder",
+      "name": "Unit 8Encoder",
+      "recovered_name": null,
+      "category": "switches",
+      "category_ja": "スイッチ / 入力デバイス",
+      "category_en": "Switches / input",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:switches",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_8Encoder",
+        "url": "https://docs.m5stack.com/en/unit/Unit_8Encoder"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U154",
+      "dir": "Products/U154_Unit_8Angle",
+      "name": "Unit 8Angle",
+      "recovered_name": null,
+      "category": "switches",
+      "category_ja": "スイッチ / 入力デバイス",
+      "category_en": "Switches / input",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:switches",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_8Angle",
+        "url": "https://docs.m5stack.com/en/unit/Unit_8Angle"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U155",
+      "dir": "Products/U155_Unit_RCA",
+      "name": "Unit RCA",
+      "recovered_name": null,
+      "category": "audio",
+      "category_ja": "オーディオ",
+      "category_en": "Audio",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:audio",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_RCA",
+        "url": "https://docs.m5stack.com/en/unit/Unit_RCA"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U160-V11",
+      "dir": "Products/U160-V11_Unit_HBridge_v1.1",
+      "name": "Unit HBridge v1.1",
+      "recovered_name": null,
+      "category": "motors",
+      "category_ja": "モーター / アクチュエータ",
+      "category_en": "Motors / actuators",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:motors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_HBridge_v1.1",
+        "url": "https://docs.m5stack.com/en/unit/Unit_HBridge_v1.1"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U160",
+      "dir": "Products/U160_Unit_HBridge",
+      "name": "Unit HBridge",
+      "recovered_name": null,
+      "category": "motors",
+      "category_ja": "モーター / アクチュエータ",
+      "category_en": "Motors / actuators",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:motors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_HBridge",
+        "url": "https://docs.m5stack.com/en/unit/Unit_HBridge"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U161",
+      "dir": "Products/U161_Unit_ExtEncoder",
+      "name": "Unit Extencoder",
+      "recovered_name": null,
+      "category": "switches",
+      "category_ja": "スイッチ / 入力デバイス",
+      "category_en": "Switches / input",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:switches",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_ExtEncoder",
+        "url": "https://docs.m5stack.com/en/unit/Unit_ExtEncoder"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U162",
+      "dir": "Products/U162_Unit_AIN4-20mA",
+      "name": "Unit AIN4-20mA",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_AIN4-20mA",
+        "url": "https://docs.m5stack.com/en/unit/Unit_AIN4-20mA"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U164",
+      "dir": "Products/U164_Unit_AC_Measure",
+      "name": "Unit AC Measure",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_AC_Measure",
+        "url": "https://docs.m5stack.com/en/unit/Unit_AC_Measure"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U165",
+      "dir": "Products/U165_Unit_8Servos",
+      "name": "Unit 8Servos",
+      "recovered_name": null,
+      "category": "motors",
+      "category_ja": "モーター / アクチュエータ",
+      "category_en": "Motors / actuators",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:motors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_8Servos",
+        "url": "https://docs.m5stack.com/en/unit/Unit_8Servos"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U169",
+      "dir": "Products/U169_Unit_ENV-Pro",
+      "name": "Unit ENV-Pro",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_ENV-Pro",
+        "url": "https://docs.m5stack.com/en/unit/Unit_ENV-Pro"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U170",
+      "dir": "Products/U170_Unit_LoRaE220-920",
+      "name": "Unit LoRaE220-920",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:comms",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_LoRaE220-920",
+        "url": "https://docs.m5stack.com/en/unit/Unit_LoRaE220-920"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U170",
+      "dir": "Products/U170_Unit_LoRaE220_433",
+      "name": "Unit LoRaE220 433",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:comms",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_LoRaE220-433",
+        "url": "https://docs.m5stack.com/en/unit/Unit_LoRaE220-433"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U172",
+      "dir": "Products/U172_Unit_ToF4M",
+      "name": "Unit ToF4M",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_ToF4M",
+        "url": "https://docs.m5stack.com/en/unit/Unit_ToF4M"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U173",
+      "dir": "Products/U173_Unit_QRCode",
+      "name": "Unit QRCode",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:comms",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_QRCode",
+        "url": "https://docs.m5stack.com/en/unit/Unit_QRCode"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U174‑B_Unit_CamS3‑5MP",
+      "dir": "Products/U174‑B_Unit_CamS3‑5MP",
+      "name": "U174-B Unit CamS3-5MP",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_CamS3-5MP",
+        "url": "https://docs.m5stack.com/en/unit/Unit_CamS3-5MP"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U175",
+      "dir": "Products/U175_Unit_Reflective_IR",
+      "name": "Unit Reflective IR",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:comms",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Reflective_IR",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Reflective_IR"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U177",
+      "dir": "Products/U177_Unit_Mini_Scales",
+      "name": "Unit Mini Scales",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Mini_Scales",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Mini_Scales"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U178",
+      "dir": "Products/U178_Unit_Synth",
+      "name": "Unit Synth",
+      "recovered_name": null,
+      "category": "audio",
+      "category_ja": "オーディオ",
+      "category_en": "Audio",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:audio",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Synth",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Synth"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U179",
+      "dir": "Products/U179_Unit_Mini_CAN",
+      "name": "Unit Mini CAN",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:comms",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Mini_CAN",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Mini_CAN"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U180",
+      "dir": "Products/U180_Unit_Weight-I2C",
+      "name": "Unit Weight-I2C",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Weight-I2C",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Weight-I2C"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U181",
+      "dir": "Products/U181_Unit_BLDC_Driver",
+      "name": "Unit BLDC Driver",
+      "recovered_name": null,
+      "category": "motors",
+      "category_ja": "モーター / アクチュエータ",
+      "category_en": "Motors / actuators",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:motors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_BLDC_Driver",
+        "url": "https://docs.m5stack.com/en/unit/Unit_BLDC_Driver"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U182-Lite",
+      "dir": "Products/U182-Lite_Unit_Roller485-Lite",
+      "name": "Unit Roller485-Lite",
+      "recovered_name": null,
+      "category": "motors",
+      "category_ja": "モーター / アクチュエータ",
+      "category_en": "Motors / actuators",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:motors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Roller485-Lite",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Roller485-Lite"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U182",
+      "dir": "Products/U182_Unit_Roller485",
+      "name": "Unit Roller485",
+      "recovered_name": null,
+      "category": "motors",
+      "category_ja": "モーター / アクチュエータ",
+      "category_en": "Motors / actuators",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:motors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Roller485",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Roller485"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U183",
+      "dir": "Products/U183_Unit_DMX",
+      "name": "Unit DMX",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:comms",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_DMX",
+        "url": "https://docs.m5stack.com/en/unit/Unit_DMX"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U184-AS923",
+      "dir": "Products/U184-AS923_Unit_LoRaWAN-AS923",
+      "name": "Unit LoRaWAN-AS923",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:comms",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_LoRaWAN-AS923",
+        "url": "https://docs.m5stack.com/en/unit/Unit_LoRaWAN-AS923"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U184-CN470",
+      "dir": "Products/U184-CN470_Unit_LoRaWAN-CN470",
+      "name": "Unit LoRaWAN-CN470",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:comms",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_LoRaWAN-CN470",
+        "url": "https://docs.m5stack.com/en/unit/Unit_LoRaWAN-CN470"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U184-EU868",
+      "dir": "Products/U184-EU868_Unit_LoRaWAN-EU868",
+      "name": "Unit LoRaWAN-EU868",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:comms",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_LoRaWAN-EU868",
+        "url": "https://docs.m5stack.com/en/unit/Unit_LoRaWAN-EU868"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U184",
+      "dir": "Products/U184_Unit_LoRaWAN-US915",
+      "name": "Unit LoRaWAN-US915",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:comms",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_LoRaWAN-US915",
+        "url": "https://docs.m5stack.com/en/unit/Unit_LoRaWAN-US915"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U185",
+      "dir": "Products/U185_Unit_TMOS_PIR",
+      "name": "Unit TMOS PIR",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_TMOS_PIR",
+        "url": "https://docs.m5stack.com/en/unit/Unit_TMOS_PIR"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U186",
+      "dir": "Products/U186_Unit_Scroll",
+      "name": "Unit Scroll",
+      "recovered_name": null,
+      "category": "switches",
+      "category_ja": "スイッチ / 入力デバイス",
+      "category_en": "Switches / input",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:switches",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Scroll",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Scroll"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U187",
+      "dir": "Products/U187_Unit_MIDI",
+      "name": "Unit MIDI",
+      "recovered_name": null,
+      "category": "audio",
+      "category_ja": "オーディオ",
+      "category_en": "Audio",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:audio",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_MIDI",
+        "url": "https://docs.m5stack.com/en/unit/Unit_MIDI"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U188-Lite",
+      "dir": "Products/U188-Lite_Unit_RollerCAN-Lite",
+      "name": "Unit RollerCAN-Lite",
+      "recovered_name": null,
+      "category": "motors",
+      "category_ja": "モーター / アクチュエータ",
+      "category_en": "Motors / actuators",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:motors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_RollerCAN-Lite",
+        "url": "https://docs.m5stack.com/en/unit/Unit_RollerCAN-Lite"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U188",
+      "dir": "Products/U188_Unit_RollerCAN",
+      "name": "Unit RollerCAN",
+      "recovered_name": null,
+      "category": "motors",
+      "category_ja": "モーター / アクチュエータ",
+      "category_en": "Motors / actuators",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:motors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_RollerCAN",
+        "url": "https://docs.m5stack.com/en/unit/Unit_RollerCAN"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U189",
+      "dir": "Products/U189_Unit_TimerPWR",
+      "name": "Unit TimerPWR",
+      "recovered_name": null,
+      "category": "power",
+      "category_ja": "電源 / バッテリー",
+      "category_en": "Power / batteries",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:power",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_TimerPWR",
+        "url": "https://docs.m5stack.com/en/unit/Unit_TimerPWR"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U190",
+      "dir": "Products/U190_Unit_GPS_SMA",
+      "name": "Unit GPS SMA",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_GPS_SMA",
+        "url": "https://docs.m5stack.com/en/unit/Unit_GPS_SMA"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U191",
+      "dir": "Products/U191_Unit_ByteSwitch",
+      "name": "Unit Byteswitch",
+      "recovered_name": null,
+      "category": "switches",
+      "category_ja": "スイッチ / 入力デバイス",
+      "category_en": "Switches / input",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:switches",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_ByteSwitch",
+        "url": "https://docs.m5stack.com/en/unit/Unit_ByteSwitch"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U192",
+      "dir": "Products/U192_Unit_ByteButton",
+      "name": "Unit Bytebutton",
+      "recovered_name": null,
+      "category": "switches",
+      "category_ja": "スイッチ / 入力デバイス",
+      "category_en": "Switches / input",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:switches",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_ByteButton",
+        "url": "https://docs.m5stack.com/en/unit/Unit_ByteButton"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U193",
+      "dir": "Products/U193_Unit_Puzzle",
+      "name": "Unit Puzzle",
+      "recovered_name": null,
+      "category": "leds",
+      "category_ja": "LED / 照明",
+      "category_en": "LEDs / lighting",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "override:U193_Unit_Puzzle",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Puzzle",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Puzzle"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U194",
+      "dir": "Products/U194_Unit_ASR",
+      "name": "Unit ASR",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_ASR",
+        "url": "https://docs.m5stack.com/en/unit/Unit_ASR"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U195",
+      "dir": "Products/U195_Unit_Gateway_H2",
+      "name": "Unit Gateway H2",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:comms",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Gateway_H2",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Gateway_H2"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U196",
+      "dir": "Products/U196_Unit_Mini_ToF-90°",
+      "name": "Unit Mini ToF-90°",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Mini_ToF-90",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Mini_ToF-90"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U197",
+      "dir": "Products/U197_Unit_AudioPlayer",
+      "name": "Unit Audioplayer",
+      "recovered_name": null,
+      "category": "audio",
+      "category_ja": "オーディオ",
+      "category_en": "Audio",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:audio",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_AudioPlayer",
+        "url": "https://docs.m5stack.com/en/unit/Unit_AudioPlayer"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U198",
+      "dir": "Products/U198_Unit_Step16",
+      "name": "Unit Step16",
+      "recovered_name": null,
+      "category": "switches",
+      "category_ja": "スイッチ / 入力デバイス",
+      "category_en": "Switches / input",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:switches",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Step16",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Step16"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U199",
+      "dir": "Products/U199_Unit_MQ",
+      "name": "Unit MQ",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_MQ",
+        "url": "https://docs.m5stack.com/en/unit/Unit_MQ"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U200-1A",
+      "dir": "Products/U200-1A_Unit_INA226-1A",
+      "name": "Unit INA226-1A",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_INA226-1A",
+        "url": "https://docs.m5stack.com/en/unit/Unit_INA226-1A"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U200",
+      "dir": "Products/U200_Unit_INA226-10A",
+      "name": "Unit INA226-10A",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_INA226-10A",
+        "url": "https://docs.m5stack.com/en/unit/Unit_INA226-10A"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U202",
+      "dir": "Products/U202_Unit_C6L",
+      "name": "Unit C6L",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:comms",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_C6L",
+        "url": "https://docs.m5stack.com/en/unit/Unit_C6L"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U203",
+      "dir": "Products/U203_Unit_Fingerprint2",
+      "name": "Unit Fingerprint2",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Fingerprint2",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Fingerprint2"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U204",
+      "dir": "Products/U204_Unit_Cat1-CN",
+      "name": "Unit Cat1-CN",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:comms",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_Cat1-CN",
+        "url": "https://docs.m5stack.com/en/unit/Unit_Cat1-CN"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U205",
+      "dir": "Products/U205_Chain_Joystick",
+      "name": "Chain Joystick",
+      "recovered_name": null,
+      "category": "switches",
+      "category_ja": "スイッチ / 入力デバイス",
+      "category_en": "Switches / input",
+      "tags": [
+        "chain"
+      ],
+      "confidence": "high",
+      "reason": "keyword:switches",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "chain",
+        "slug": "Chain_Joystick",
+        "url": "https://docs.m5stack.com/en/chain/Chain_Joystick"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U212",
+      "dir": "Products/U212_Unit_ChainBus",
+      "name": "Unit Chainbus",
+      "recovered_name": null,
+      "category": "connectors",
+      "category_ja": "コネクタ / ケーブル",
+      "category_en": "Connectors / cables",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:connectors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_ChainBus",
+        "url": "https://docs.m5stack.com/en/unit/Unit_ChainBus"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U213",
+      "dir": "Products/U213_Unit_PoE_P4",
+      "name": "Unit PoE P4",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:comms",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_PoE-P4",
+        "url": "https://docs.m5stack.com/en/unit/Unit_PoE-P4"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U214",
+      "dir": "Products/U214_Cap_LoRa-1262",
+      "name": "Cap LoRa-1262",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "cap"
+      ],
+      "confidence": "high",
+      "reason": "override:U214_Cap_LoRa-1262",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "cap",
+        "slug": "Cap_LoRa-1262",
+        "url": "https://docs.m5stack.com/en/cap/Cap_LoRa-1262"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U216",
+      "dir": "Products/U216_Unit_NFC",
+      "name": "Unit NFC",
+      "recovered_name": null,
+      "category": "comms",
+      "category_ja": "通信 / インタフェース",
+      "category_en": "Communications / interfaces",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:comms",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_NFC",
+        "url": "https://docs.m5stack.com/en/unit/Unit_NFC"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U228",
+      "dir": "Products/U228_Unit_DoF6",
+      "name": "Unit DoF6",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_DoF6",
+        "url": "https://docs.m5stack.com/en/unit/Unit_DoF6"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U229",
+      "dir": "Products/U229_Unit_DoF9",
+      "name": "Unit DoF9",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_DoF9",
+        "url": "https://docs.m5stack.com/en/unit/Unit_DoF9"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U230",
+      "dir": "Products/U230_Unit_DoF10",
+      "name": "Unit DoF10",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_DoF10",
+        "url": "https://docs.m5stack.com/en/unit/Unit_DoF10"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": "U231",
+      "dir": "Products/U231_Unit_BMM350",
+      "name": "Unit BMM350",
+      "recovered_name": null,
+      "category": "sensors",
+      "category_ja": "センサー",
+      "category_en": "Sensors",
+      "tags": [
+        "unit"
+      ],
+      "confidence": "high",
+      "reason": "keyword:sensors",
+      "adafruit_official": null,
+      "m5_docs": {
+        "section": "unit",
+        "slug": "Unit_BMM350",
+        "url": "https://docs.m5stack.com/en/unit/Unit_BMM350"
+      }
+    },
+    {
+      "maker": "m5stack",
+      "id": null,
+      "dir": "Common/Atomic_Type_A",
+      "name": "Atomic Type A",
+      "recovered_name": null,
+      "category": "cases",
+      "category_ja": "ケース / 筐体",
+      "category_en": "Cases / enclosures",
+      "tags": [
+        "atomic",
+        "common"
+      ],
+      "confidence": "high",
+      "reason": "common form-factor shell",
+      "adafruit_official": null,
+      "m5_docs": null
+    },
+    {
+      "maker": "m5stack",
+      "id": null,
+      "dir": "Common/Module_Type_A",
+      "name": "Module Type A",
+      "recovered_name": null,
+      "category": "cases",
+      "category_ja": "ケース / 筐体",
+      "category_en": "Cases / enclosures",
+      "tags": [
+        "module",
+        "common"
+      ],
+      "confidence": "high",
+      "reason": "common form-factor shell",
+      "adafruit_official": null,
+      "m5_docs": null
+    },
+    {
+      "maker": "m5stack",
+      "id": null,
+      "dir": "Common/Module_Type_B",
+      "name": "Module Type B",
+      "recovered_name": null,
+      "category": "cases",
+      "category_ja": "ケース / 筐体",
+      "category_en": "Cases / enclosures",
+      "tags": [
+        "module",
+        "common"
+      ],
+      "confidence": "high",
+      "reason": "common form-factor shell",
+      "adafruit_official": null,
+      "m5_docs": null
+    },
+    {
+      "maker": "m5stack",
+      "id": null,
+      "dir": "Common/Unit_Type_A",
+      "name": "Unit Type A",
+      "recovered_name": null,
+      "category": "cases",
+      "category_ja": "ケース / 筐体",
+      "category_en": "Cases / enclosures",
+      "tags": [
+        "unit",
+        "common"
+      ],
+      "confidence": "high",
+      "reason": "common form-factor shell",
+      "adafruit_official": null,
+      "m5_docs": null
+    },
+    {
+      "maker": "m5stack",
+      "id": null,
+      "dir": "Common/Unit_Type_B",
+      "name": "Unit Type B",
+      "recovered_name": null,
+      "category": "cases",
+      "category_ja": "ケース / 筐体",
+      "category_en": "Cases / enclosures",
+      "tags": [
+        "unit",
+        "common"
+      ],
+      "confidence": "high",
+      "reason": "common form-factor shell",
+      "adafruit_official": null,
+      "m5_docs": null
+    },
+    {
+      "maker": "m5stack",
+      "id": null,
+      "dir": "Common/Unit_Type_C",
+      "name": "Unit Type C",
+      "recovered_name": null,
+      "category": "cases",
+      "category_ja": "ケース / 筐体",
+      "category_en": "Cases / enclosures",
+      "tags": [
+        "unit",
+        "common"
+      ],
+      "confidence": "high",
+      "reason": "common form-factor shell",
+      "adafruit_official": null,
+      "m5_docs": null
     }
   ]
 }

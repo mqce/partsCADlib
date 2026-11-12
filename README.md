@@ -7,6 +7,7 @@ partsCADlib website
 
 - https://github.com/adafruit/Adafruit_CAD_Parts
 - https://github.com/sparkfun/3D_Models
+- https://github.com/m5stack/M5_Hardware (MIT)
 
 画像とダウンロードファイルは、これらのリポジトリから直接取得されます。
 

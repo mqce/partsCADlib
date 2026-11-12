@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build a self-contained Japanese catalog of Adafruit and SparkFun CAD parts."""
+"""Build a self-contained Japanese catalog of Adafruit, SparkFun, and M5Stack CAD parts."""
 
 from __future__ import annotations
 
@@ -19,6 +19,8 @@ ADA_TREE = Path("/tmp/tree.json")
 SF_TREE = Path("/tmp/sf-tree.json")
 SF_NAMES = Path("/tmp/sf_product_names.json")
 SF_EAGLE = Path("/tmp/sf_eagleup.json")
+M5_TREE = Path("/tmp/m5-tree.json")
+M5_DOCS = Path("/tmp/m5-docs-cats.json")
 CATS_PATH = Path("/workspace/adafruit_cad_parts/categories_draft.json")
 
 ADA = {
@@ -38,6 +40,14 @@ SF = {
     "commit": "53d298c3b8202cf8fce9ab61885855720c84c012",
     "commit_utc": "2023-10-26T22:06:11Z",
     "product_url": "https://www.sparkfun.com/products/{id}",
+}
+M5 = {
+    "maker": "m5stack",
+    "label": "M5Stack",
+    "repo": "m5stack/M5_Hardware",
+    "branch": "master",
+    "commit": "e47d331664a9c6a4d0cb8de9fcb3eaa01b26467a",
+    "commit_utc": "2026-11-12T06:34:18Z",
 }
 
 # Verified by fetching first bytes (Adafruit extensionless files).
@@ -64,6 +74,11 @@ EXT_LABEL = {
     ".zip": "ZIP", ".pdf": "PDF",
     ".dxf": "DXF", ".svg": "SVG",
     ".brd": "BRD", ".sch": "SCH",
+    ".dwg": "DWG", ".cdr": "CDR",
+    ".pcbdoc": "PCBDOC", ".schdoc": "SCHDOC",
+    ".pcblib": "PCBLIB", ".schlib": "SCHLIB",
+    ".kicad_pcb": "KICAD_PCB", ".kicad_mod": "KICAD_MOD",
+    ".kicad_sym": "KICAD_SYM", ".kicad_sch": "KICAD_SCH", ".kicad_pro": "KICAD_PRO",
     ".prt": "PRT", ".x_t": "X_T", ".x_b": "X_B", ".brep": "BREP",
     ".scad": "SCAD", ".fcstd": "FCSTD", ".wrl": "WRL", ".vrml": "WRL",
     ".fbx": "FBX", ".smt": "SMT",
@@ -94,7 +109,9 @@ ZIP_NONMODEL_HINTS = (
 EXT_PRIORITY = [
     "STEP", "IGES", "STL", "3MF", "F3D", "F3Z", "SLDPRT", "SLDASM",
     "BLEND", "SKP", "OBJ", "DAE", "ZIP", "DXF", "SVG", "PDF",
-    "BRD", "SCH", "SCAD", "FCSTD", "WRL", "PRT", "X_T", "BREP",
+    "BRD", "SCH", "PCBDOC", "SCHDOC", "PCBLIB", "SCHLIB", "DWG", "CDR",
+    "KICAD_PCB", "KICAD_MOD", "KICAD_SYM", "KICAD_SCH",
+    "SCAD", "FCSTD", "WRL", "PRT", "X_T", "BREP",
     "FBX", "SMT", "PNG", "JPG", "GIF", "WEBP", "BMP", "MTL",
 ]
 
@@ -116,6 +133,10 @@ ACRONYMS = {
     "ic": "IC", "pcb": "PCB", "rf": "RF", "ir": "IR", "uv": "UV",
     "ssop": "SSOP", "soic": "SOIC", "qfn": "QFN", "dip": "DIP",
     "xh": "XH", "ph": "PH", "mm": "mm", "cm": "cm",
+    "nfc": "NFC", "uwb": "UWB", "imu": "IMU", "dds": "DDS",
+    "dmx": "DMX", "rtc": "RTC", "dac": "DAC", "adc": "ADC",
+    "ssr": "SSR", "bldc": "BLDC", "gnss": "GNSS", "mqtt": "MQTT",
+    "nbiot": "NB-IoT", "lte": "LTE", "qr": "QR",
 }
 
 
@@ -463,19 +484,232 @@ def build_sparkfun_parts(tree: list[dict], names: dict, eagle: dict) -> list[dic
     return parts
 
 
+
+def norm_key(s: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "", (s or "").lower())
+
+
+def parse_m5_folder(folder: str) -> tuple[list[str], str]:
+    folder = folder.replace("\u2011", "-").replace("\u2013", "-").replace("\u2212", "-")
+    if folder == "K001":
+        return ["K001"], "Basic"
+    m = re.match(r"^([A-Z]{1,3}(?:-\d+)?[0-9]{0,4}(?:-[A-Za-z0-9]+)*)_(.+)$", folder)
+    if m:
+        return [m.group(1)], polish_m5_name(pretty_stem(m.group(2)))
+    return [folder], polish_m5_name(pretty_stem(folder))
+
+
+def polish_m5_name(name: str) -> str:
+    fixes = [
+        (r"\bStickc\b", "StickC"),
+        (r"\bRoverc\b", "RoverC"),
+        (r"\bStackchan\b", "StackChan"),
+        (r"\bBasex\b", "BaseX"),
+        (r"\bPahub\b", "PaHub"),
+        (r"\bPbhub\b", "PbHub"),
+        (r"\bUnitv\b", "UnitV"),
+        (r"\bCores3\b", "CoreS3"),
+        (r"\bAtoms3r\b", "AtomS3R"),
+        (r"\bAtoms3u\b", "AtomS3U"),
+        (r"\bAtoms3\b", "AtomS3"),
+        (r"\bStamplc\b", "StamPLC"),
+        (r"\bStampfly\b", "StampFly"),
+        (r"\bTimercamera\b", "TimerCamera"),
+        (r"\bByteswitch\b", "ByteSwitch"),
+        (r"\bBytebutton\b", "ByteButton"),
+        (r"\bAudioplayer\b", "AudioPlayer"),
+        (r"\bExtencoder\b", "ExtEncoder"),
+        (r"\bHbridge\b", "HBridge"),
+        (r"\bAtom-matrix\b", "Atom Matrix"),
+        (r"\bAtom-lite\b", "Atom Lite"),
+        (r"\bM5go\b", "M5GO"),
+        (r"\bM5stack\b", "M5Stack"),
+        (r"-pro\b", " Pro"),
+        (r"\bTof\b", "ToF"),
+        (r"\bDof(\d+)\b", r"DoF\1"),
+    ]
+    for pat, repl in fixes:
+        name = re.sub(pat, repl, name, flags=re.I)
+    name = re.sub(r"\s+", " ", name).strip()
+    return name
+
+
+def m5_thumb_key(part: dict) -> str:
+    if part.get("ids"):
+        return f"m5stack/{part['ids'][0]}"
+    folder = part["dir"].rsplit("/", 1)[-1]
+    return f"m5stack/common-{folder}"
+
+
+def load_m5_docs_index() -> dict[str, tuple[str, str]]:
+    if not M5_DOCS.is_file():
+        return {}
+    docs = json.loads(M5_DOCS.read_text())
+    skip = {
+        "start", "products", "products_selector", "download", "history",
+        "certification", "guide", "esp_idf", "stackflow", "homeassistant",
+        "product_i2c_addr", "compatible_stack",
+    }
+    index: dict[str, tuple[str, str]] = {}
+    for section, slugs in docs.items():
+        if section in skip:
+            continue
+        for slug in slugs:
+            leaf = slug.rsplit("/", 1)[-1]
+            rec = (section, slug)
+            for key in {
+                norm_key(slug),
+                norm_key(leaf),
+                norm_key(re.sub(r"^(Unit_|Module_|Hat_|Module13\.2_)", "", leaf)),
+            }:
+                if key and key not in index:
+                    index[key] = rec
+    return index
+
+
+def match_m5_docs(folder: str, name: str, index: dict[str, tuple[str, str]]) -> str | None:
+    after = folder.split("_", 1)[1] if "_" in folder else folder
+    candidates = [
+        folder, after, name,
+        after.replace("Unit_", ""), after.replace("Module_", ""), after.replace("Hat_", ""),
+        name.replace("Unit ", ""),
+    ]
+    for c in candidates:
+        rec = index.get(norm_key(c))
+        if rec:
+            section, slug = rec
+            return f"https://docs.m5stack.com/en/{section}/{slug}"
+    n = norm_key(after)
+    hits = [
+        v for k, v in index.items()
+        if n and (n == k or n.endswith(k) or k.endswith(n)) and len(min(n, k, key=len)) >= 6
+    ]
+    uniq = list({(s, sl) for s, sl in hits})
+    if len(uniq) == 1:
+        section, slug = uniq[0]
+        return f"https://docs.m5stack.com/en/{section}/{slug}"
+    # well-known cores not always listed with the same slug on the products index
+    if norm_key(after) in {"atoms3", "stickc", "basic", "core"} or folder in {"C123_AtomS3", "K016-C_StickC", "K001", "K009-F_Watch"}:
+        guess = {
+            "C123_AtomS3": "https://docs.m5stack.com/en/core/AtomS3",
+            "K016-C_StickC": "https://docs.m5stack.com/en/core/StickC",
+            "K001": "https://docs.m5stack.com/en/core/Basic",
+            "K009-F_Watch": "https://docs.m5stack.com/en/core/Watch",
+        }.get(folder)
+        if guess:
+            return guess
+    return None
+
+
+def kicad_steps_by_stem(tree: list[dict]) -> dict[str, dict]:
+    out: dict[str, dict] = {}
+    for entry in tree:
+        if entry["type"] != "blob":
+            continue
+        path = entry["path"]
+        if not path.startswith("KiCad/3D/") or suffix(path) not in STEP_EXTS:
+            continue
+        stem = path.rsplit("/", 1)[-1].rsplit(".", 1)[0]
+        out[norm_key(stem)] = entry
+    return out
+
+
+def build_m5stack_parts(tree: list[dict]) -> list[dict]:
+    """Parts from m5stack/M5_Hardware: Products/* and Common/* form-factor shells."""
+    docs_index = load_m5_docs_index()
+    kicad = kicad_steps_by_stem(tree)
+    by_prod: dict[str, list[dict]] = defaultdict(list)
+    by_common: dict[str, list[dict]] = defaultdict(list)
+    for entry in tree:
+        if entry["type"] != "blob":
+            continue
+        path = entry["path"]
+        if path.startswith("Products/") and path.count("/") >= 2:
+            by_prod[path.split("/")[1]].append(entry)
+        elif path.startswith("Common/") and path.count("/") >= 2:
+            by_common[path.split("/")[1]].append(entry)
+
+    def attach_kicad(folder: str, blobs: list[dict]) -> list[dict]:
+        if any(suffix(b["path"]) in (STEP_EXTS | {".stl", ".obj", ".iges", ".igs"}) for b in blobs):
+            return blobs
+        key = norm_key(folder.split("_", 1)[-1])
+        for k, entry in kicad.items():
+            if k == key or k.replace("stamp", "") == key.replace("stamp", ""):
+                return blobs + [entry]
+        return blobs
+
+    def records(prefix: str, groups: dict[str, list[dict]], common: bool) -> list[dict]:
+        parts = []
+        for folder, blobs in sorted(groups.items()):
+            blobs = attach_kicad(folder, blobs) if not common else blobs
+            files = iter_download_files(blobs, M5["repo"], M5["branch"])
+            number_labels(files)
+            if common:
+                ids: list[str] = []
+                name = polish_m5_name(pretty_stem(folder))
+            else:
+                ids, name = parse_m5_folder(folder)
+            images = []
+            steps = []
+            for entry in blobs:
+                kind = classify_image_or_step(entry["path"])
+                if not kind:
+                    continue
+                item = {
+                    "name": entry["path"].rsplit("/", 1)[-1],
+                    "url": raw_url(M5["repo"], M5["branch"], entry["path"]),
+                    "size": int(entry.get("size") or 0),
+                }
+                if kind == "image":
+                    images.append((image_score(entry["path"], folder, item["size"]), item))
+                else:
+                    steps.append(item)
+            images.sort(key=lambda x: (-x[0][0], -x[0][1], x[0][2]))
+            images = [it for _, it in images]
+            steps.sort(key=lambda s: s["name"].lower())
+            rec = {
+                "maker": "m5stack",
+                "dir": f"{prefix}/{folder}",
+                "ids": ids,
+                "name": name,
+                "images": images,
+                "steps": steps,
+                "files": files,
+                "github": github_tree_url(M5["repo"], M5["branch"], f"{prefix}/{folder}"),
+                "productUrl": None if common else match_m5_docs(folder, name, docs_index),
+            }
+            parts.append(rec)
+        return parts
+
+    return records("Products", by_prod, False) + records("Common", by_common, True)
+
+
 def attach_generated_thumbs(parts: list[dict]) -> int:
     attached = 0
     for part in parts:
         if part.get("images"):
             continue
-        # Adafruit key is dir; SparkFun key is sparkfun/{id}
+        # Adafruit key is dir; SparkFun is sparkfun/{id}; M5Stack is m5stack/{sku or common-folder}
         if part["maker"] == "sparkfun":
             pid = part["dir"].rsplit("/", 1)[-1]
             key = f"sparkfun/{pid}"
+        elif part["maker"] == "m5stack":
+            key = m5_thumb_key(part)
         else:
             key = part["dir"]
-        path = THUMBS_DIR / f"{slug_dir(key)}.webp"
-        if not path.is_file() or path.stat().st_size == 0:
+        candidates = [key]
+        if part["maker"] == "m5stack":
+            # fallbacks for Unicode hyphens in folder names used as earlier slugs
+            folder = part["dir"].rsplit("/", 1)[-1]
+            candidates.append(f"m5stack/{folder}")
+            candidates.append(part["dir"])
+        path = None
+        for cand in candidates:
+            pth = THUMBS_DIR / f"{slug_dir(cand)}.webp"
+            if pth.is_file() and pth.stat().st_size:
+                path = pth
+                break
+        if path is None:
             continue
         raw = path.read_bytes()
         part["images"] = [{
@@ -523,12 +757,14 @@ def attach_categories(parts: list[dict]) -> list[dict]:
 def html_page(parts: list[dict], generated_jst: str, embed: bool, cats: list[dict]) -> str:
     ada_dt = datetime.fromisoformat(ADA["commit_utc"].replace("Z", "+00:00")).astimezone(JST).strftime("%Y-%m-%d %H:%M")
     sf_dt = datetime.fromisoformat(SF["commit_utc"].replace("Z", "+00:00")).astimezone(JST).strftime("%Y-%m-%d %H:%M")
+    m5_dt = datetime.fromisoformat(M5["commit_utc"].replace("Z", "+00:00")).astimezone(JST).strftime("%Y-%m-%d %H:%M")
     data = {
         "pageSize": 40,
         "categories": cats,
         "sources": {
             "adafruit": {"repo": ADA["repo"], "branch": ADA["branch"], "commit": ADA["commit"], "date": ada_dt},
             "sparkfun": {"repo": SF["repo"], "branch": SF["branch"], "commit": SF["commit"], "date": sf_dt},
+            "m5stack": {"repo": M5["repo"], "branch": M5["branch"], "commit": M5["commit"], "date": m5_dt},
         },
         "parts": parts,
     }
@@ -537,6 +773,7 @@ def html_page(parts: list[dict], generated_jst: str, embed: bool, cats: list[dic
     n = len(parts)
     n_ada = sum(1 for p in parts if p["maker"] == "adafruit")
     n_sf = sum(1 for p in parts if p["maker"] == "sparkfun")
+    n_m5 = sum(1 for p in parts if p["maker"] == "m5stack")
     n_gen = sum(1 for p in parts if p["images"] and p["images"][0].get("generated"))
     n_repo_img = sum(1 for p in parts if p["images"] and not p["images"][0].get("generated"))
     n_step = sum(1 for p in parts if p["steps"])
@@ -551,8 +788,8 @@ def html_page(parts: list[dict], generated_jst: str, embed: bool, cats: list[dic
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>電子部品 CADモデルカタログ（Adafruit / SparkFun）</title>
-<meta name="description" content="Adafruit と SparkFun の公式CADリポジトリから、画像・商品名・各種ファイルのダウンロードを一覧する非公式カタログです。">
+<title>電子部品 CADモデルカタログ（Adafruit / SparkFun / M5Stack）</title>
+<meta name="description" content="Adafruit、SparkFun、M5Stack の公式CADリポジトリから、画像・商品名・各種ファイルのダウンロードを一覧する非公式カタログです。">
 <style>
 :root {{
   --bg: #f3efe8;
@@ -781,13 +1018,14 @@ footer p {{ margin: 0 0 8px; }}
     <div class="wrap top-inner">
       <div class="brand">
         <h1>電子部品 CADモデルカタログ</h1>
-        <p class="src">Adafruit / SparkFun 公式リポジトリの非公式一覧</p>
+        <p class="src">Adafruit / SparkFun / M5Stack 公式リポジトリの非公式一覧</p>
       </div>
       <div class="controls">
         <div class="seg" role="group" aria-label="メーカー">
           <button type="button" data-maker="all" aria-pressed="true">すべて</button>
           <button type="button" data-maker="adafruit" aria-pressed="false">Adafruit</button>
           <button type="button" data-maker="sparkfun" aria-pressed="false">SparkFun</button>
+          <button type="button" data-maker="m5stack" aria-pressed="false">M5Stack</button>
         </div>
         <label class="search">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -817,9 +1055,9 @@ footer p {{ margin: 0 0 8px; }}
   </main>
 
   <footer class="wrap">
-    <p>このページは Adafruit と SparkFun の公式CADリポジトリをまとめた非公式カタログです。リポジトリ付属の画像とCADファイルは GitHub から直接配信されます（Git LFS は使われていません）。{thumb_note}</p>
-    <p>Adafruit: <a href="https://github.com/{ADA['repo']}" target="_blank" rel="noopener">{ADA['repo']}</a>（{ADA['branch']} / {ada_dt} Asia/Tokyo / <code>{ADA['commit'][:10]}</code>）。SparkFun: <a href="https://github.com/{SF['repo']}" target="_blank" rel="noopener">{SF['repo']}</a>（{SF['branch']} / {sf_dt} Asia/Tokyo / <code>{SF['commit'][:10]}</code>）。ページ生成: {generated_jst}（Asia/Tokyo）。全{n}件（Adafruit {n_ada} / SparkFun {n_sf}）。リポジトリの画像 {n_repo_img}件、3Dモデルから生成したサムネイル {n_gen}件、STEPあり {n_step}件。</p>
-    <p>販売終了などで SparkFun 製品ページが見つからない部品は、フォルダ内のファイル名などから商品名を補っています。</p>
+    <p>このページは Adafruit、SparkFun、M5Stack の公式CADリポジトリをまとめた非公式カタログです。リポジトリ付属の画像とCADファイルは GitHub から直接配信されます（Git LFS は使われていません）。{thumb_note}</p>
+    <p>Adafruit: <a href="https://github.com/{ADA['repo']}" target="_blank" rel="noopener">{ADA['repo']}</a>（{ADA['branch']} / {ada_dt} Asia/Tokyo / <code>{ADA['commit'][:10]}</code>）。SparkFun: <a href="https://github.com/{SF['repo']}" target="_blank" rel="noopener">{SF['repo']}</a>（{SF['branch']} / {sf_dt} Asia/Tokyo / <code>{SF['commit'][:10]}</code>）。M5Stack: <a href="https://github.com/{M5['repo']}" target="_blank" rel="noopener">{M5['repo']}</a>（{M5['branch']} / {m5_dt} Asia/Tokyo / <code>{M5['commit'][:10]}</code>）。ページ生成: {generated_jst}（Asia/Tokyo）。全{n}件（Adafruit {n_ada} / SparkFun {n_sf} / M5Stack {n_m5}）。リポジトリの画像 {n_repo_img}件、3Dモデルから生成したサムネイル {n_gen}件、STEPあり {n_step}件。</p>
+    <p>販売終了などで SparkFun 製品ページが見つからない部品は、フォルダ内のファイル名などから商品名を補っています。M5Stack の商品名はリポジトリのフォルダ名と docs.m5stack.com のページから取っています。</p>
   </footer>
 
   <script type="application/json" id="catalog-data">{payload}</script>
@@ -842,7 +1080,7 @@ footer p {{ margin: 0 0 8px; }}
 
     const params = new URLSearchParams(location.search);
     let maker = params.get("maker") || "all";
-    if (maker !== "adafruit" && maker !== "sparkfun") maker = "all";
+    if (maker !== "adafruit" && maker !== "sparkfun" && maker !== "m5stack") maker = "all";
     let cat = params.get("cat") || "all";
     if (cat !== "all" && !CAT_IDS[cat]) cat = "all";
     let page = Math.max(1, parseInt(params.get("page") || "1", 10) || 1);
@@ -859,7 +1097,11 @@ footer p {{ margin: 0 0 8px; }}
         return ({{ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }})[c];
       }});
     }}
-    function makerLabel(m) {{ return m === "sparkfun" ? "SparkFun" : "Adafruit"; }}
+    function makerLabel(m) {{
+      if (m === "sparkfun") return "SparkFun";
+      if (m === "m5stack") return "M5Stack";
+      return "Adafruit";
+    }}
 
     function matches(part, query) {{
       if (!query) return true;
@@ -1236,9 +1478,15 @@ footer p {{ margin: 0 0 8px; }}
 
 
 def sort_parts(parts: list[dict]) -> list[dict]:
+    maker_ord = {"adafruit": 0, "sparkfun": 1, "m5stack": 2}
+
     def key(p):
-        pid = p["ids"][0] if p["ids"] else 10**9
-        return (pid, 0 if p["maker"] == "adafruit" else 1, p["name"].lower())
+        raw = p["ids"][0] if p["ids"] else None
+        if isinstance(raw, int) or (isinstance(raw, str) and str(raw).isdigit()):
+            num_key = (0, int(raw), "")
+        else:
+            num_key = (1, 10**9, str(raw or "").lower())
+        return (*num_key, maker_ord.get(p["maker"], 9), p["name"].lower())
     parts.sort(key=key)
     return parts
 
@@ -1254,11 +1502,16 @@ def write_zip() -> None:
 def main() -> None:
     ada_tree = json.loads(ADA_TREE.read_text())["tree"]
     sf_tree = json.loads(SF_TREE.read_text())["tree"]
+    m5_tree = json.loads(M5_TREE.read_text())["tree"]
     names = {r["id"]: r for r in json.loads(SF_NAMES.read_text())} if SF_NAMES.exists() else {}
     eagle = json.loads(SF_EAGLE.read_text()) if SF_EAGLE.exists() else {}
 
-    parts = build_adafruit_parts(ada_tree) + build_sparkfun_parts(sf_tree, names, eagle)
-    before = {"adafruit": 0, "sparkfun": 0}
+    parts = (
+        build_adafruit_parts(ada_tree)
+        + build_sparkfun_parts(sf_tree, names, eagle)
+        + build_m5stack_parts(m5_tree)
+    )
+    before = {"adafruit": 0, "sparkfun": 0, "m5stack": 0}
     for p in parts:
         before[p["maker"]] = before.get(p["maker"], 0) + 1
     removed = [p for p in parts if not has_3d_model(p)]
@@ -1275,26 +1528,25 @@ def main() -> None:
         why[tuple(sorted(set(labels)))] += 1
         print(f"  [{p['maker']}] {p['dir']} | {p['name']} | files={labels}")
     print("removed by maker:",
-          {m: sum(1 for p in removed if p['maker']==m) for m in ("adafruit", "sparkfun")})
+          {m: sum(1 for p in removed if p['maker']==m) for m in ("adafruit", "sparkfun", "m5stack")})
     print("removed reasons:", {str(k): v for k, v in why.items()})
     print("before filter:", before, "after:",
-          {m: sum(1 for p in parts if p['maker']==m) for m in ("adafruit", "sparkfun")})
+          {m: sum(1 for p in parts if p['maker']==m) for m in ("adafruit", "sparkfun", "m5stack")})
 
     generated_jst = datetime.now(JST).strftime("%Y-%m-%d %H:%M")
     html = html_page(parts, generated_jst, embed=True, cats=cats)
     size = len(html.encode("utf-8"))
-    embed = size <= MAX_HTML_BYTES
-    if not embed:
-        print(f"HTML with data URIs is {size} bytes, switching to external thumbs/")
-        use_external_thumbs(parts)
-        html = html_page(parts, generated_jst, embed=False, cats=cats)
-        size = len(html.encode("utf-8"))
+    embed = True
+    if size > MAX_HTML_BYTES:
+        print(
+            f"WARNING: HTML with embedded thumbs is {size} bytes "
+            f"(over the ~{MAX_HTML_BYTES} byte guideline). "
+            "Keeping a single self-contained file rather than silently switching to external thumbs/. "
+            "Options: (1) keep this single file, (2) emit index.html + thumbs/ + catalog.zip, "
+            "(3) lower WebP quality to shrink data URIs."
+        )
     OUT_PATH.write_text(html, encoding="utf-8")
     print(f"wrote {OUT_PATH} ({size} bytes) embed={embed}")
-
-    if not embed:
-        write_zip()
-        print(f"wrote {ZIP_PATH} ({ZIP_PATH.stat().st_size} bytes)")
 
     def report(maker=None):
         subset = [p for p in parts if maker is None or p["maker"] == maker]
@@ -1310,13 +1562,15 @@ def main() -> None:
     report()
     report("adafruit")
     report("sparkfun")
+    report("m5stack")
     print("CATEGORY COUNTS:")
     from collections import Counter
     cc = Counter((p["category"], p["maker"]) for p in parts)
     for c in cats:
         ada = cc.get((c["id"], "adafruit"), 0)
         sf = cc.get((c["id"], "sparkfun"), 0)
-        print(f"  {c['id']:14s} {c['label']:20s} total={ada+sf:4d} ada={ada:3d} sf={sf:3d}")
+        m5 = cc.get((c["id"], "m5stack"), 0)
+        print(f"  {c['id']:14s} {c['label']:20s} total={ada+sf+m5:4d} ada={ada:3d} sf={sf:3d} m5={m5:3d}")
     print("NO IMAGE remaining:")
     for p in parts:
         if not p["images"]:
