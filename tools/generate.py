@@ -19,6 +19,7 @@ ADA_TREE = Path("/tmp/tree.json")
 SF_TREE = Path("/tmp/sf-tree.json")
 SF_NAMES = Path("/tmp/sf_product_names.json")
 SF_EAGLE = Path("/tmp/sf_eagleup.json")
+CATS_PATH = Path("/workspace/adafruit_cad_parts/categories_draft.json")
 
 ADA = {
     "maker": "adafruit",
@@ -495,11 +496,36 @@ def use_external_thumbs(parts: list[dict]) -> None:
                 im["url"] = "thumbs/" + im["file"]
 
 
-def html_page(parts: list[dict], generated_jst: str, embed: bool) -> str:
+def attach_categories(parts: list[dict]) -> list[dict]:
+    """Attach the approved dry-run category to each part. Returns [{id, label}, ...]."""
+    if not CATS_PATH.is_file():
+        raise SystemExit(f"missing category draft: {CATS_PATH}")
+    draft = json.loads(CATS_PATH.read_text())
+    cats = [{"id": c["id"], "label": c["ja"]} for c in draft["categories"]]
+    valid = {c["id"] for c in cats}
+    by_key = {(row["maker"], row["dir"]): row for row in draft["parts"]}
+    missing = 0
+    for part in parts:
+        row = by_key.get((part["maker"], part["dir"]))
+        if not row or row.get("category") not in valid:
+            missing += 1
+            cid, label = "other", next((c["label"] for c in cats if c["id"] == "other"), "その他")
+        else:
+            cid = row["category"]
+            label = next((c["label"] for c in cats if c["id"] == cid), row.get("category_ja") or "その他")
+        part["category"] = cid
+        part["categoryLabel"] = label
+    if missing:
+        print(f"WARNING: {missing} parts had no draft mapping and were set to その他")
+    return cats
+
+
+def html_page(parts: list[dict], generated_jst: str, embed: bool, cats: list[dict]) -> str:
     ada_dt = datetime.fromisoformat(ADA["commit_utc"].replace("Z", "+00:00")).astimezone(JST).strftime("%Y-%m-%d %H:%M")
     sf_dt = datetime.fromisoformat(SF["commit_utc"].replace("Z", "+00:00")).astimezone(JST).strftime("%Y-%m-%d %H:%M")
     data = {
         "pageSize": 40,
+        "categories": cats,
         "sources": {
             "adafruit": {"repo": ADA["repo"], "branch": ADA["branch"], "commit": ADA["commit"], "date": ada_dt},
             "sparkfun": {"repo": SF["repo"], "branch": SF["branch"], "commit": SF["commit"], "date": sf_dt},
@@ -622,8 +648,38 @@ header.top {{
 .seg button[aria-pressed="true"] {{
   background: var(--accent-soft); color: var(--accent-ink); font-weight: 700;
 }}
-.dl:focus-visible, .seg button:focus-visible, .pages button:focus-visible {{
+.dl:focus-visible, .seg button:focus-visible, .pages button:focus-visible, .cats button:focus-visible, .cats-select:focus-visible {{
   box-shadow: var(--focus); outline: none;
+}}
+.cats-wrap {{ padding: 0 0 10px; }}
+.cats {{
+  display: flex; flex-wrap: wrap; gap: 6px;
+}}
+.cats button {{
+  border: 1px solid var(--line); background: var(--card); color: var(--muted);
+  border-radius: 999px; padding: 4px 10px; font-size: .76rem; cursor: pointer;
+  white-space: nowrap; line-height: 1.4;
+}}
+.cats button[aria-pressed="true"] {{
+  background: var(--accent-soft); color: var(--accent-ink); font-weight: 700; border-color: transparent;
+}}
+.cats button .n {{
+  color: var(--faint); font-weight: 500; margin-left: 3px;
+  font-variant-numeric: tabular-nums;
+}}
+.cats button[aria-pressed="true"] .n {{ color: inherit; opacity: .8; }}
+.cats button.is-empty {{ opacity: .45; }}
+.cats-select {{
+  display: none; width: 100%; max-width: 100%;
+  border: 1px solid var(--line); background: var(--card); color: var(--text);
+  border-radius: 10px; padding: 8px 10px;
+}}
+.meta-row {{
+  display: flex; align-items: baseline; justify-content: space-between; gap: 8px;
+}}
+.cat-label {{
+  font-size: .68rem; color: var(--faint); font-weight: 600;
+  letter-spacing: .02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }}
 .toolbar {{
   display: flex; flex-wrap: wrap; gap: 10px 16px;
@@ -715,6 +771,8 @@ footer p {{ margin: 0 0 8px; }}
   .wrap {{ width: calc(100% - 20px); }}
   .thumb {{ height: 180px; }}
   .brand h1 {{ font-size: 1.05rem; }}
+  .cats {{ display: none; }}
+  .cats-select {{ display: block; }}
 }}
 </style>
 </head>
@@ -739,6 +797,10 @@ footer p {{ margin: 0 0 8px; }}
           <input type="search" id="q" placeholder="商品名または製品IDで検索" autocomplete="off" spellcheck="false" aria-label="商品名または製品IDで検索">
         </label>
       </div>
+    </div>
+    <div class="wrap cats-wrap">
+      <div class="cats" id="cats" role="group" aria-label="カテゴリー"></div>
+      <select class="cats-select" id="catSelect" aria-label="カテゴリー"></select>
     </div>
   </header>
 
@@ -772,10 +834,17 @@ footer p {{ margin: 0 0 8px; }}
     const pagesBottom = document.getElementById("pagesBottom");
     const q = document.getElementById("q");
     const seg = document.querySelector(".seg");
+    const catsEl = document.getElementById("cats");
+    const catSelect = document.getElementById("catSelect");
+    const CATEGORIES = data.categories || [];
+    const CAT_IDS = {{}};
+    CATEGORIES.forEach(function (c) {{ CAT_IDS[c.id] = c; }});
 
     const params = new URLSearchParams(location.search);
     let maker = params.get("maker") || "all";
     if (maker !== "adafruit" && maker !== "sparkfun") maker = "all";
+    let cat = params.get("cat") || "all";
+    if (cat !== "all" && !CAT_IDS[cat]) cat = "all";
     let page = Math.max(1, parseInt(params.get("page") || "1", 10) || 1);
 
     function fmtSize(n) {{
@@ -795,26 +864,38 @@ footer p {{ margin: 0 0 8px; }}
     function matches(part, query) {{
       if (!query) return true;
       const hay = norm([
-        part.dir, part.name, makerLabel(part.maker),
+        part.dir, part.name, makerLabel(part.maker), part.categoryLabel,
         (part.ids || []).join(" "),
         (part.files || []).map(function (f) {{ return f.name + " " + f.label; }}).join(" ")
       ].join(" "));
       return query.split(/\\s+/).filter(Boolean).every(function (w) {{ return hay.indexOf(w) !== -1; }});
     }}
 
-    function filtered() {{
+    function poolFiltered() {{
       const query = norm(q.value);
       return data.parts.filter(function (p) {{
         if (maker !== "all" && p.maker !== maker) return false;
         return matches(p, query);
       }});
     }}
+    function filtered() {{
+      const pool = poolFiltered();
+      if (cat === "all") return pool;
+      return pool.filter(function (p) {{ return p.category === cat; }});
+    }}
 
     function writeUrl() {{
       const u = new URL(location.href);
       if (maker === "all") u.searchParams.delete("maker"); else u.searchParams.set("maker", maker);
+      if (cat === "all") u.searchParams.delete("cat"); else u.searchParams.set("cat", cat);
       if (page <= 1) u.searchParams.delete("page"); else u.searchParams.set("page", String(page));
       history.replaceState(null, "", u);
+    }}
+
+    function setCat(next) {{
+      cat = (next && CAT_IDS[next]) ? next : "all";
+      page = 1;
+      render();
     }}
 
     function setMaker(next) {{
@@ -907,6 +988,7 @@ footer p {{ margin: 0 0 8px; }}
       Array.prototype.forEach.call(seg.querySelectorAll("button"), function (b) {{
         b.setAttribute("aria-pressed", b.getAttribute("data-maker") === maker ? "true" : "false");
       }});
+      updateCatControls();
 
       if (!slice.length) {{
         grid.innerHTML = '<div class="empty">該当する部品がありません。検索条件を変えてみてください。</div>';
@@ -979,10 +1061,20 @@ footer p {{ margin: 0 0 8px; }}
 
       const body = document.createElement("div");
       body.className = "body";
+      const meta = document.createElement("div");
+      meta.className = "meta-row";
       const mk = document.createElement("div");
       mk.className = "maker";
       mk.textContent = makerLabel(part.maker);
-      body.appendChild(mk);
+      meta.appendChild(mk);
+      if (part.categoryLabel) {{
+        const cl = document.createElement("div");
+        cl.className = "cat-label";
+        cl.textContent = part.categoryLabel;
+        cl.title = part.categoryLabel;
+        meta.appendChild(cl);
+      }}
+      body.appendChild(meta);
 
       const h = document.createElement("h2");
       h.className = "name";
@@ -1070,6 +1162,57 @@ footer p {{ margin: 0 0 8px; }}
       }}
     }}
 
+    function catCounts() {{
+      const pool = poolFiltered();
+      const counts = {{ all: pool.length }};
+      CATEGORIES.forEach(function (c) {{ counts[c.id] = 0; }});
+      pool.forEach(function (p) {{
+        if (p.category && counts[p.category] !== undefined) counts[p.category]++;
+      }});
+      return counts;
+    }}
+    function fmtCount(n) {{ return (n || 0).toLocaleString("ja-JP"); }}
+    function updateCatControls() {{
+      const counts = catCounts();
+      Array.prototype.forEach.call(catsEl.querySelectorAll("button"), function (b) {{
+        const id = b.getAttribute("data-cat");
+        const n = counts[id] || 0;
+        const num = b.querySelector(".n");
+        if (num) num.textContent = fmtCount(n);
+        b.setAttribute("aria-pressed", id === cat ? "true" : "false");
+        b.classList.toggle("is-empty", n === 0 && id !== "all");
+      }});
+      Array.prototype.forEach.call(catSelect.options, function (opt) {{
+        const id = opt.value;
+        const n = counts[id] || 0;
+        const label = id === "all" ? "すべて" : (CAT_IDS[id] && CAT_IDS[id].label) || id;
+        opt.textContent = label + "（" + fmtCount(n) + "）";
+      }});
+      catSelect.value = cat;
+    }}
+    function buildCatControls() {{
+      catsEl.innerHTML = "";
+      catSelect.innerHTML = "";
+      const items = [{{ id: "all", label: "すべて" }}].concat(CATEGORIES);
+      items.forEach(function (c) {{
+        const b = document.createElement("button");
+        b.type = "button";
+        b.setAttribute("data-cat", c.id);
+        b.setAttribute("aria-pressed", c.id === cat ? "true" : "false");
+        b.appendChild(document.createTextNode(c.label));
+        const num = document.createElement("span");
+        num.className = "n";
+        b.appendChild(num);
+        b.addEventListener("click", function () {{ setCat(c.id); }});
+        catsEl.appendChild(b);
+        const opt = document.createElement("option");
+        opt.value = c.id;
+        opt.textContent = c.label;
+        catSelect.appendChild(opt);
+      }});
+      catSelect.addEventListener("change", function () {{ setCat(catSelect.value); }});
+    }}
+
     function schedule() {{
       page = 1;
       render();
@@ -1083,6 +1226,7 @@ footer p {{ margin: 0 0 8px; }}
       const b = e.target.closest("button[data-maker]");
       if (b) setMaker(b.getAttribute("data-maker"));
     }});
+    buildCatControls();
     render();
   }})();
   </script>
@@ -1122,6 +1266,7 @@ def main() -> None:
     sort_parts(parts)
     n_attached = attach_generated_thumbs(parts)
     print(f"attached generated thumbs: {n_attached}")
+    cats = attach_categories(parts)
     print("REMOVED (no 3D model file):")
     from collections import Counter
     why = Counter()
@@ -1136,13 +1281,13 @@ def main() -> None:
           {m: sum(1 for p in parts if p['maker']==m) for m in ("adafruit", "sparkfun")})
 
     generated_jst = datetime.now(JST).strftime("%Y-%m-%d %H:%M")
-    html = html_page(parts, generated_jst, embed=True)
+    html = html_page(parts, generated_jst, embed=True, cats=cats)
     size = len(html.encode("utf-8"))
     embed = size <= MAX_HTML_BYTES
     if not embed:
         print(f"HTML with data URIs is {size} bytes, switching to external thumbs/")
         use_external_thumbs(parts)
-        html = html_page(parts, generated_jst, embed=False)
+        html = html_page(parts, generated_jst, embed=False, cats=cats)
         size = len(html.encode("utf-8"))
     OUT_PATH.write_text(html, encoding="utf-8")
     print(f"wrote {OUT_PATH} ({size} bytes) embed={embed}")
@@ -1165,6 +1310,13 @@ def main() -> None:
     report()
     report("adafruit")
     report("sparkfun")
+    print("CATEGORY COUNTS:")
+    from collections import Counter
+    cc = Counter((p["category"], p["maker"]) for p in parts)
+    for c in cats:
+        ada = cc.get((c["id"], "adafruit"), 0)
+        sf = cc.get((c["id"], "sparkfun"), 0)
+        print(f"  {c['id']:14s} {c['label']:20s} total={ada+sf:4d} ada={ada:3d} sf={sf:3d}")
     print("NO IMAGE remaining:")
     for p in parts:
         if not p["images"]:
