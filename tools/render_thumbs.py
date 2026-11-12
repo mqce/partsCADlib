@@ -67,10 +67,25 @@ def pick_main_step(steps: list[dict], dirname: str) -> dict:
     return max(steps, key=score)
 
 
-def load_step_scene(step_bytes: bytes, linear_tol: float = 0.12) -> trimesh.Scene:
+PRIORITY_LABELS = [
+    "STL", "OBJ", "3MF", "GLB", "GLTF", "DAE", "WRL",
+    "IGES", "BLEND", "SKP", "FBX",
+]
+MESH_FILE_TYPES = {
+    "STL": "stl", "OBJ": "obj", "3MF": "3mf",
+    "GLB": "glb", "GLTF": "gltf", "DAE": "dae", "WRL": "wrl",
+}
+
+# Formats we cannot convert without extra tools (checked at runtime).
+def blender_bin() -> str | None:
+    import shutil
+    return shutil.which("blender") or shutil.which("blender-4.3") or shutil.which("blender-4.2")
+
+
+def load_step_scene(step_bytes: bytes, linear_tol: float = 0.12, file_type: str = "step") -> trimesh.Scene:
     glb = cascadio.load(
         step_bytes,
-        file_type="step",
+        file_type=file_type,
         include_materials=True,
         merge_primitives=True,
         use_parallel=True,
@@ -79,13 +94,99 @@ def load_step_scene(step_bytes: bytes, linear_tol: float = 0.12) -> trimesh.Scen
         tol_relative=False,
     )
     if not glb:
-        raise RuntimeError("cascadio returned empty GLB")
+        raise RuntimeError(f"cascadio returned empty GLB ({file_type})")
     scene = trimesh.load(io.BytesIO(glb), file_type="glb", force="scene")
     if not isinstance(scene, trimesh.Scene):
         scene = trimesh.Scene(scene)
     if not scene.geometry:
         raise RuntimeError("no geometry in converted scene")
     return scene
+
+
+def load_mesh_scene(path: Path, file_type: str) -> trimesh.Scene:
+    scene = trimesh.load(path.as_posix(), file_type=file_type, force="scene")
+    if not isinstance(scene, trimesh.Scene):
+        scene = trimesh.Scene(scene)
+    if not scene.geometry:
+        raise RuntimeError(f"no geometry in {file_type} file")
+    return scene
+
+
+def load_blend_scene(path: Path) -> trimesh.Scene:
+    import subprocess, tempfile
+    blender = blender_bin()
+    if not blender:
+        raise RuntimeError("Blender is not installed; skipping BLEND")
+    with tempfile.TemporaryDirectory(prefix="blend-export-") as td:
+        out = Path(td) / "export.glb"
+        script = Path(td) / "export.py"
+        script.write_text(
+            "import bpy, sys\n"
+            "out = sys.argv[sys.argv.index('--') + 1]\n"
+            "bpy.ops.export_scene.gltf(filepath=out, export_format='GLB', export_apply=True)\n"
+        )
+        cmd = [
+            blender, "-b", str(path), "-noaudio",
+            "--python", str(script), "--", str(out),
+        ]
+        proc = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
+        if proc.returncode != 0 or not out.is_file() or out.stat().st_size == 0:
+            err = (proc.stderr or proc.stdout or "")[-800:]
+            raise RuntimeError(f"Blender export failed (exit {proc.returncode}): {err}")
+        scene = trimesh.load(out.as_posix(), file_type="glb", force="scene")
+    if not isinstance(scene, trimesh.Scene):
+        scene = trimesh.Scene(scene)
+    if not scene.geometry:
+        raise RuntimeError("no geometry in Blender export")
+    return scene
+
+
+def load_scene(path: Path, label: str, linear_tol: float | None = None) -> trimesh.Scene:
+    lab = (label or "").upper()
+    if lab in {"STEP", "IGES"}:
+        data = path.read_bytes()
+        if linear_tol is None:
+            sz = len(data)
+            if sz > 8_000_000:
+                linear_tol = 0.28
+            elif sz > 2_000_000:
+                linear_tol = 0.16
+            else:
+                linear_tol = 0.10
+        return load_step_scene(data, linear_tol=linear_tol, file_type="iges" if lab == "IGES" else "step")
+    if lab in MESH_FILE_TYPES:
+        return load_mesh_scene(path, MESH_FILE_TYPES[lab])
+    if lab == "BLEND":
+        return load_blend_scene(path)
+    if lab in {"SKP", "FBX"}:
+        raise RuntimeError(f"no converter available for {lab}; skipping")
+    raise RuntimeError(f"unsupported format {lab}")
+
+
+def order_candidates(files: list[dict], dirname: str) -> list[dict]:
+    """Dedup and order files by PRIORITY_LABELS; best file of each type first."""
+    seen: set[tuple] = set()
+    by: dict[str, list[dict]] = {}
+    for f in files:
+        lab = (f.get("label") or "").upper()
+        if lab not in PRIORITY_LABELS:
+            continue
+        key = (lab, f.get("name"), f.get("url"))
+        if key in seen:
+            continue
+        seen.add(key)
+        by.setdefault(lab, []).append(f)
+    out: list[dict] = []
+    for lab in PRIORITY_LABELS:
+        group = by.get(lab) or []
+        if not group:
+            continue
+        main = pick_main_step(group, dirname)
+        rest = [x for x in group if x is not main]
+        rest.sort(key=lambda s: -int(s.get("size") or 0))
+        out.append(main)
+        out.extend(rest)
+    return out
 
 
 def scene_to_arrays(scene: trimesh.Scene) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
@@ -350,6 +451,25 @@ class Renderer:
         return img
 
 
+def scene_to_image(scene: trimesh.Scene, renderer: Renderer | None = None) -> Image.Image:
+    vertices, normals, colors = scene_to_arrays(scene)
+    own = False
+    if renderer is None:
+        renderer = Renderer()
+        own = True
+    try:
+        return renderer.render(vertices, normals, colors)
+    finally:
+        if own:
+            renderer.ctx.release()
+
+
+def file_to_image(path: Path, label: str, renderer: Renderer | None = None,
+                  linear_tol: float | None = None) -> Image.Image:
+    scene = load_scene(path, label, linear_tol=linear_tol)
+    return scene_to_image(scene, renderer=renderer)
+
+
 def step_file_to_image(path: Path | None = None, data: bytes | None = None, renderer: Renderer | None = None,
                        linear_tol: float | None = None) -> Image.Image:
     if data is None:
@@ -502,6 +622,111 @@ def run_batch(list_path: Path, outdir: Path, cache: Path, timeout_s: int = 180) 
         print("  FAIL", r["dir"], r.get("error"), flush=True)
 
 
+def run_batch_other(list_path: Path, outdir: Path, cache: Path, timeout_s: int = 180) -> None:
+    """Render thumbs from non-STEP 3D files. Tries candidates in priority order per part."""
+    import signal
+
+    class TimeoutError_(Exception):
+        pass
+
+    def _alarm(signum, frame):
+        raise TimeoutError_(f"timeout after {timeout_s}s")
+
+    signal.signal(signal.SIGALRM, _alarm)
+    jobs = json.loads(list_path.read_text())
+    outdir.mkdir(parents=True, exist_ok=True)
+    cache.mkdir(parents=True, exist_ok=True)
+    log_path = outdir / "render_other.log"
+    manifest_path = outdir / "manifest_other.json"
+    results = []
+    if manifest_path.exists():
+        try:
+            results = json.loads(manifest_path.read_text())
+        except Exception:
+            results = []
+    done = {r["dir"] for r in results if r.get("ok")}
+    renderer = Renderer()
+    n = len(jobs)
+    print(f"other-batch start: {n} parts, {len(done)} already done, blender={blender_bin() or 'no'}", flush=True)
+    for i, part in enumerate(jobs, 1):
+        dirname = part["dir"]
+        slug_key = part.get("slug_key") or dirname
+        slug = slug_dir(slug_key)
+        dest = outdir / f"{slug}.webp"
+        rec = {"dir": dirname, "slug": slug, "maker": part.get("maker"), "name": part.get("name")}
+        if dirname in done and dest.exists():
+            print(f"[{i}/{n}] skip exists {dirname}", flush=True)
+            continue
+        cands = order_candidates(part.get("candidates") or part.get("files") or [], dirname)
+        rec["tried"] = []
+        if not cands:
+            rec.update(ok=False, error="no supported 3D candidate files")
+            print(f"[{i}/{n}] FAIL {dirname}: no candidates", flush=True)
+            results = [r for r in results if r.get("dir") != dirname]
+            results.append(rec)
+            manifest_path.write_text(json.dumps(results, ensure_ascii=False, indent=2))
+            with log_path.open("a") as log:
+                log.write(json.dumps(rec, ensure_ascii=False) + "\n")
+            continue
+        t0 = time.time()
+        success = False
+        last_err = None
+        for st in cands:
+            attempt = {"label": st.get("label"), "name": st.get("name"), "size": st.get("size")}
+            cache_name = slug_dir(st["name"]) or "file.bin"
+            cache_file = cache / f"{slug}__{cache_name}"
+            try:
+                if not cache_file.exists() or cache_file.stat().st_size == 0:
+                    print(f"[{i}/{n}] download {dirname} / {st['name']}", flush=True)
+                    download(st["url"], cache_file)
+                print(f"[{i}/{n}] render {dirname} from {st.get('label')} {st['name']} ({cache_file.stat().st_size} bytes)", flush=True)
+                signal.alarm(timeout_s)
+                try:
+                    img = file_to_image(cache_file, st.get("label") or "", renderer=renderer)
+                finally:
+                    signal.alarm(0)
+                size = save_webp(img, dest)
+                attempt.update(ok=True, bytes=size)
+                rec["tried"].append(attempt)
+                rec.update(
+                    ok=True, bytes=size, seconds=round(time.time() - t0, 2),
+                    width=img.width, height=img.height,
+                    source_label=st.get("label"), source_name=st.get("name"),
+                    source_size=st.get("size"), url=st.get("url"),
+                )
+                print(f"    ok {st.get('label')} {size} bytes in {rec['seconds']}s", flush=True)
+                success = True
+                break
+            except TimeoutError_ as e:
+                last_err = str(e)
+                attempt.update(ok=False, error=last_err)
+                rec["tried"].append(attempt)
+                print(f"    FAIL {st.get('label')} {st['name']}: {last_err}", flush=True)
+            except Exception as e:
+                last_err = f"{type(e).__name__}: {e}"
+                attempt.update(ok=False, error=last_err)
+                rec["tried"].append(attempt)
+                print(f"    FAIL {st.get('label')} {st['name']}: {last_err}", flush=True)
+        if not success:
+            rec.update(ok=False, error=last_err or "all candidates failed", seconds=round(time.time() - t0, 2))
+            print(f"    FAIL part {dirname}: {rec['error']}", flush=True)
+        results = [r for r in results if r.get("dir") != dirname]
+        results.append(rec)
+        manifest_path.write_text(json.dumps(results, ensure_ascii=False, indent=2))
+        with log_path.open("a") as log:
+            log.write(json.dumps(rec, ensure_ascii=False) + "\n")
+    ok = sum(1 for r in results if r.get("ok"))
+    fail = [r for r in results if not r.get("ok")]
+    by_src: dict[str, int] = {}
+    for r in results:
+        if r.get("ok"):
+            lab = r.get("source_label") or "?"
+            by_src[lab] = by_src.get(lab, 0) + 1
+    print(f"other-batch done: ok={ok} fail={len(fail)} by_source={by_src}", flush=True)
+    for r in fail:
+        print("  FAIL", r["dir"], r.get("name"), r.get("error"), "tried=", r.get("tried"), flush=True)
+
+
 if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else ""
     if cmd == "samples":
@@ -512,5 +737,11 @@ if __name__ == "__main__":
         cache = Path(sys.argv[4]) if len(sys.argv) > 4 else Path("/tmp/step_cache")
         timeout_s = int(sys.argv[5]) if len(sys.argv) > 5 else 180
         run_batch(list_path, outdir, cache, timeout_s=timeout_s)
+    elif cmd == "other":
+        list_path = Path(sys.argv[2]) if len(sys.argv) > 2 else Path("/tmp/need_other_thumbs.json")
+        outdir = Path(sys.argv[3]) if len(sys.argv) > 3 else Path("/workspace/adafruit_cad_parts/thumbs")
+        cache = Path(sys.argv[4]) if len(sys.argv) > 4 else Path("/tmp/mesh_cache")
+        timeout_s = int(sys.argv[5]) if len(sys.argv) > 5 else 180
+        run_batch_other(list_path, outdir, cache, timeout_s=timeout_s)
     else:
-        print("use: render_thumbs.py samples | batch [list.json outdir cache timeout]")
+        print("use: render_thumbs.py samples | batch [list.json outdir cache timeout] | other [list.json outdir cache timeout]")

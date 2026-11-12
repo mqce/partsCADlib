@@ -478,7 +478,7 @@ def attach_generated_thumbs(parts: list[dict]) -> int:
             continue
         raw = path.read_bytes()
         part["images"] = [{
-            "name": "STEPから生成",
+            "name": "3Dモデルから生成",
             "url": "data:image/webp;base64," + base64.b64encode(raw).decode("ascii"),
             "size": len(raw),
             "generated": True,
@@ -549,7 +549,8 @@ def html_page(parts: list[dict], generated_jst: str, embed: bool) -> str:
   --focus: 0 0 0 3px rgba(200, 30, 30, .35);
   color-scheme: light;
 }}
-html[data-theme="dark"] {{
+@media (prefers-color-scheme: dark) {{
+  :root {{
   --bg: #161311;
   --bg-accent: #1e1a16;
   --card: #221e1a;
@@ -568,6 +569,7 @@ html[data-theme="dark"] {{
   --header: rgba(22, 19, 17, .86);
   --thumb-bg: #2a251f;
   color-scheme: dark;
+  }}
 }}
 * {{ box-sizing: border-box; }}
 html, body {{ margin: 0; padding: 0; }}
@@ -620,17 +622,7 @@ header.top {{
 .seg button[aria-pressed="true"] {{
   background: var(--accent-soft); color: var(--accent-ink); font-weight: 700;
 }}
-.toggle {{
-  display: flex; align-items: center; gap: 8px;
-  background: var(--card); border: 1px solid var(--line); border-radius: 999px;
-  padding: 7px 12px; cursor: pointer; user-select: none; white-space: nowrap;
-}}
-.toggle input {{ accent-color: var(--accent); width: 15px; height: 15px; }}
-.icon-btn {{
-  border: 1px solid var(--line); background: var(--card); color: var(--text);
-  border-radius: 999px; width: 38px; height: 38px; display: grid; place-items: center; cursor: pointer;
-}}
-.icon-btn:focus-visible, .toggle:focus-within, .dl:focus-visible, .seg button:focus-visible, .pages button:focus-visible {{
+.dl:focus-visible, .seg button:focus-visible, .pages button:focus-visible {{
   box-shadow: var(--focus); outline: none;
 }}
 .toolbar {{
@@ -685,17 +677,13 @@ header.top {{
   background: rgba(20,16,12,.62); color: #fff; cursor: pointer;
   display: grid; place-items: center; padding: 0;
 }}
-html[data-theme="dark"] .img-pager button {{ background: rgba(0,0,0,.55); }}
+@media (prefers-color-scheme: dark) {{
+  .img-pager button {{ background: rgba(0,0,0,.55); }}
+}}
 .img-count {{
   position: absolute; left: 8px; bottom: 8px; font-size: .72rem;
   background: rgba(20,16,12,.62); color: #fff; border-radius: 999px;
   padding: 2px 8px; z-index: 2; pointer-events: none;
-}}
-.gen-badge {{
-  position: absolute; left: 8px; top: 8px; z-index: 2;
-  font-size: .68rem; font-weight: 600; letter-spacing: .02em;
-  background: rgba(20,16,12,.58); color: #fff; border-radius: 999px;
-  padding: 2px 8px; pointer-events: none;
 }}
 .body {{ padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 6px; flex: 1; }}
 .maker {{
@@ -750,15 +738,6 @@ footer p {{ margin: 0 0 8px; }}
           </svg>
           <input type="search" id="q" placeholder="商品名または製品IDで検索" autocomplete="off" spellcheck="false" aria-label="商品名または製品IDで検索">
         </label>
-        <label class="toggle">
-          <input type="checkbox" id="stepOnly">
-          <span>STEPがある部品のみ</span>
-        </label>
-        <button type="button" class="icon-btn" id="themeBtn" aria-label="配色を切り替える" title="配色を切り替える">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <path d="M21 14.5A8.5 8.5 0 1 1 9.5 3 7 7 0 0 0 21 14.5z"></path>
-          </svg>
-        </button>
       </div>
     </div>
   </header>
@@ -777,7 +756,7 @@ footer p {{ margin: 0 0 8px; }}
 
   <footer class="wrap">
     <p>このページは Adafruit と SparkFun の公式CADリポジトリをまとめた非公式カタログです。リポジトリ付属の画像とCADファイルは GitHub から直接配信されます（Git LFS は使われていません）。{thumb_note}</p>
-    <p>Adafruit: <a href="https://github.com/{ADA['repo']}" target="_blank" rel="noopener">{ADA['repo']}</a>（{ADA['branch']} / {ada_dt} Asia/Tokyo / <code>{ADA['commit'][:10]}</code>）。SparkFun: <a href="https://github.com/{SF['repo']}" target="_blank" rel="noopener">{SF['repo']}</a>（{SF['branch']} / {sf_dt} Asia/Tokyo / <code>{SF['commit'][:10]}</code>）。ページ生成: {generated_jst}（Asia/Tokyo）。全{n}件（Adafruit {n_ada} / SparkFun {n_sf}）。リポジトリの画像 {n_repo_img}件、STEPから生成したサムネイル {n_gen}件、STEPあり {n_step}件。</p>
+    <p>Adafruit: <a href="https://github.com/{ADA['repo']}" target="_blank" rel="noopener">{ADA['repo']}</a>（{ADA['branch']} / {ada_dt} Asia/Tokyo / <code>{ADA['commit'][:10]}</code>）。SparkFun: <a href="https://github.com/{SF['repo']}" target="_blank" rel="noopener">{SF['repo']}</a>（{SF['branch']} / {sf_dt} Asia/Tokyo / <code>{SF['commit'][:10]}</code>）。ページ生成: {generated_jst}（Asia/Tokyo）。全{n}件（Adafruit {n_ada} / SparkFun {n_sf}）。リポジトリの画像 {n_repo_img}件、3Dモデルから生成したサムネイル {n_gen}件、STEPあり {n_step}件。</p>
     <p>販売終了などで SparkFun 製品ページが見つからない部品は、フォルダ内のファイル名などから商品名を補っています。</p>
   </footer>
 
@@ -792,20 +771,7 @@ footer p {{ margin: 0 0 8px; }}
     const pagesTop = document.getElementById("pagesTop");
     const pagesBottom = document.getElementById("pagesBottom");
     const q = document.getElementById("q");
-    const stepOnly = document.getElementById("stepOnly");
-    const themeBtn = document.getElementById("themeBtn");
     const seg = document.querySelector(".seg");
-
-    const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const savedTheme = localStorage.getItem("cad-catalog-theme");
-    setTheme(savedTheme || (prefersDark ? "dark" : "light"));
-    themeBtn.addEventListener("click", function () {{
-      setTheme(document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark", true);
-    }});
-    function setTheme(theme, persist) {{
-      document.documentElement.setAttribute("data-theme", theme);
-      if (persist) localStorage.setItem("cad-catalog-theme", theme);
-    }}
 
     const params = new URLSearchParams(location.search);
     let maker = params.get("maker") || "all";
@@ -838,10 +804,8 @@ footer p {{ margin: 0 0 8px; }}
 
     function filtered() {{
       const query = norm(q.value);
-      const only = stepOnly.checked;
       return data.parts.filter(function (p) {{
         if (maker !== "all" && p.maker !== maker) return false;
-        if (only && !(p.steps && p.steps.length)) return false;
         return matches(p, query);
       }});
     }}
@@ -979,7 +943,7 @@ footer p {{ margin: 0 0 8px; }}
         function show(i) {{
           idx = (i + images.length) % images.length;
           img.src = images[idx].url;
-          img.alt = part.name + (images[idx].generated ? "（STEPから生成）" : "（" + images[idx].name + "）");
+          img.alt = part.name + (images[idx].name ? "（" + images[idx].name + "）" : "");
         }}
         img.addEventListener("error", function () {{
           if (img.dataset.failed) return;
@@ -988,12 +952,6 @@ footer p {{ margin: 0 0 8px; }}
         }});
         show(0);
         thumbLink.appendChild(img);
-        if (images[0] && images[0].generated) {{
-          const badge = document.createElement("div");
-          badge.className = "gen-badge";
-          badge.textContent = "STEPから生成";
-          thumb.appendChild(badge);
-        }}
         if (images.length > 1) {{
           const count = document.createElement("div");
           count.className = "img-count";
@@ -1121,7 +1079,6 @@ footer p {{ margin: 0 0 8px; }}
       q._t = setTimeout(schedule, 60);
     }});
     q.addEventListener("search", schedule);
-    stepOnly.addEventListener("change", schedule);
     seg.addEventListener("click", function (e) {{
       const b = e.target.closest("button[data-maker]");
       if (b) setMaker(b.getAttribute("data-maker"));
