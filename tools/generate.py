@@ -63,12 +63,33 @@ EXT_LABEL = {
     ".zip": "ZIP", ".pdf": "PDF",
     ".dxf": "DXF", ".svg": "SVG",
     ".brd": "BRD", ".sch": "SCH",
-    ".prt": "PRT", ".x_t": "X_T", ".brep": "BREP",
-    ".scad": "SCAD", ".fcstd": "FCSTD", ".wrl": "WRL",
+    ".prt": "PRT", ".x_t": "X_T", ".x_b": "X_B", ".brep": "BREP",
+    ".scad": "SCAD", ".fcstd": "FCSTD", ".wrl": "WRL", ".vrml": "WRL",
     ".fbx": "FBX", ".smt": "SMT",
+    ".glb": "GLB", ".gltf": "GLTF", ".3ds": "3DS",
+    ".ipt": "IPT", ".iam": "IAM",
     ".jpg": "JPG", ".jpeg": "JPG", ".png": "PNG",
     ".gif": "GIF", ".webp": "WEBP", ".bmp": "BMP",
 }
+
+# 3D model types that qualify a part for inclusion in the catalog.
+MODEL_LABELS = {
+    "STEP", "STL", "IGES", "F3D", "F3Z", "SLDPRT", "SLDASM",
+    "SKP", "BLEND", "DAE", "WRL", "OBJ", "3MF", "GLB", "GLTF",
+    "X_T", "X_B", "BREP", "FCSTD", "SCAD", "3DS", "FBX", "IPT", "IAM",
+}
+ZIP_MODEL_HINTS = (
+    "cad", "step", "stp", "stl", "iges", "igs", "model", "3d", "mesh",
+    "fusion", "solidworks", "sldprt", "sldasm", "freecad", "kicad",
+    "parasolid", "brep", "fcstd", "blend", "sketchup", "skp", "obj",
+    "gltf", "glb", "3mf", "f3d", "f3z", "inventor",
+)
+ZIP_NONMODEL_HINTS = (
+    "photo", "photos", "image", "images", "img", "pic", "pics",
+    "datasheet", "datasheets", "doc", "docs", "documentation",
+    "gerber", "gerbers", "schematic", "schematics", "bom",
+    "firmware", "software", "driver", "pdf",
+)
 EXT_PRIORITY = [
     "STEP", "IGES", "STL", "3MF", "F3D", "F3Z", "SLDPRT", "SLDASM",
     "BLEND", "SKP", "OBJ", "DAE", "ZIP", "DXF", "SVG", "PDF",
@@ -134,6 +155,27 @@ def file_label(path: str) -> str | None:
     if not ext or ext in SKIP_META_EXTS:
         return None
     return EXT_LABEL.get(ext, ext[1:].upper())
+
+
+def zip_counts_as_model(filename: str) -> bool:
+    """Treat a ZIP as a 3D model unless its name clearly indicates otherwise."""
+    stem = filename.rsplit(".", 1)[0].lower()
+    # If the name clearly looks like photos/docs/gerbers, skip it.
+    if any(h in stem for h in ZIP_NONMODEL_HINTS) and not any(h in stem for h in ZIP_MODEL_HINTS):
+        return False
+    # CAD-ish name, or ambiguous (can't tell) → include.
+    return True
+
+
+def has_3d_model(part: dict) -> bool:
+    for f in part.get("files") or []:
+        label = f.get("label") or ""
+        if label in MODEL_LABELS:
+            return True
+        if label == "ZIP" and zip_counts_as_model(f.get("name") or ""):
+            return True
+        # Extensionless Adafruit STEP already labeled STEP.
+    return False
 
 
 def download_name(path: str) -> str:
@@ -1115,9 +1157,26 @@ def main() -> None:
     eagle = json.loads(SF_EAGLE.read_text()) if SF_EAGLE.exists() else {}
 
     parts = build_adafruit_parts(ada_tree) + build_sparkfun_parts(sf_tree, names, eagle)
+    before = {"adafruit": 0, "sparkfun": 0}
+    for p in parts:
+        before[p["maker"]] = before.get(p["maker"], 0) + 1
+    removed = [p for p in parts if not has_3d_model(p)]
+    parts = [p for p in parts if has_3d_model(p)]
     sort_parts(parts)
     n_attached = attach_generated_thumbs(parts)
     print(f"attached generated thumbs: {n_attached}")
+    print("REMOVED (no 3D model file):")
+    from collections import Counter
+    why = Counter()
+    for p in removed:
+        labels = [f["label"] for f in p.get("files") or []] or ["(no CAD/image files listed)"]
+        why[tuple(sorted(set(labels)))] += 1
+        print(f"  [{p['maker']}] {p['dir']} | {p['name']} | files={labels}")
+    print("removed by maker:",
+          {m: sum(1 for p in removed if p['maker']==m) for m in ("adafruit", "sparkfun")})
+    print("removed reasons:", {str(k): v for k, v in why.items()})
+    print("before filter:", before, "after:",
+          {m: sum(1 for p in parts if p['maker']==m) for m in ("adafruit", "sparkfun")})
 
     generated_jst = datetime.now(JST).strftime("%Y-%m-%d %H:%M")
     html = html_page(parts, generated_jst, embed=True)
